@@ -16,6 +16,18 @@ export function Header() {
   const scrolled = useScrolled(8);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    document.body.classList.toggle('nav-open', menuOpen);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.classList.remove('nav-open');
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [menuOpen]);
+
   // Cerrar el menú si pasa a desktop
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 960px)');

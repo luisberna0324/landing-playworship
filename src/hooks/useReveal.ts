@@ -6,7 +6,7 @@ import { useEffect } from 'react';
  * Si el navegador no soporta IntersectionObserver, los marca visibles
  * inmediatamente (fallback gracioso).
  */
-export function useReveal(selector = '.reveal', threshold = 0.12) {
+export function useReveal(selector = '.reveal', threshold = 0.08) {
   useEffect(() => {
     const elements = document.querySelectorAll<HTMLElement>(selector);
     if (!elements.length) return;
@@ -25,7 +25,7 @@ export function useReveal(selector = '.reveal', threshold = 0.12) {
           }
         }
       },
-      { threshold, rootMargin: '0px 0px -40px 0px' }
+      { threshold, rootMargin: '0px 0px -8% 0px' }
     );
 
     elements.forEach((el) => observer.observe(el));
