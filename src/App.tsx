@@ -1,9 +1,9 @@
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { Cinemagraph } from './components/Cinemagraph';
+import { MobileApp } from './components/MobileApp';
 import { TaskModule } from './components/TaskModule';
 import { BestPractices } from './components/BestPractices';
-import { Access } from './components/Access';
 import { Pricing } from './components/Pricing';
 import { Faq } from './components/Faq';
 import { CtaFinal } from './components/CtaFinal';
@@ -23,9 +23,9 @@ export default function App() {
       <main id="main">
         <Hero />
         <Cinemagraph />
+        <MobileApp />
         <TaskModule />
         <BestPractices />
-        <Access />
         <Pricing />
         <Faq />
         <CtaFinal />

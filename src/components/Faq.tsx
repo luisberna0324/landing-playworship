@@ -19,7 +19,7 @@ const ITEMS: FaqItem[] = [
     answer: (
       <p>
         No. La biblioteca se carga desde disco y todo el audio corre en local. Solo necesitás
-        conexión para descargar la app o el control remoto desde el celular.
+        conexión para descargar la app y recibir actualizaciones.
       </p>
     )
   },
@@ -43,15 +43,6 @@ const ITEMS: FaqItem[] = [
     )
   },
   {
-    question: '¿Es compatible con los multitracks de Loop Community?',
-    answer: (
-      <p>
-        Sí. Descargá el ZIP de tu multitrack desde Loop Community Prime y cargalo directo en Play
-        Worship. La app organiza todos los canales automáticamente.
-      </p>
-    )
-  },
-  {
     question: '¿Cómo instalo Play Worship?',
     answer: (
       <p>
@@ -64,9 +55,8 @@ const ITEMS: FaqItem[] = [
     question: '¿Puedo controlar la app desde el celular?',
     answer: (
       <p>
-        Estamos terminando el control remoto vía servidor web embebido. Vas a poder abrir una URL
-        desde cualquier dispositivo en la misma WiFi y dirigir el set sin estar adelante de la
-        pantalla.
+        Todavía estamos definiendo la experiencia de control remoto desde el celular. Compartiremos
+        los detalles de funcionamiento y compatibilidad cuando estén listos.
       </p>
     )
   },

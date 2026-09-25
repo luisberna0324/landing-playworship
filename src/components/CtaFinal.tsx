@@ -22,7 +22,7 @@ export function CtaFinal() {
           </a>
         </div>
         <p className="cta-note">
-          Compatible con Windows 10 / 11 · Interfaces ASIO &amp; WASAPI · Loop Community
+          Compatible con Windows 10 / 11 · Interfaces ASIO &amp; WASAPI
         </p>
       </div>
     </section>

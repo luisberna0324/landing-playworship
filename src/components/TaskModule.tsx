@@ -1,4 +1,5 @@
 import { useId, useRef, useState, type KeyboardEvent } from 'react';
+import { LazyVideo } from './LazyVideo';
 
 interface Tab {
   id: string;
@@ -7,6 +8,9 @@ interface Tab {
   desc: string;
   image: string;
   alt: string;
+  video?: string;
+  poster?: string;
+  aspectRatio?: string;
 }
 
 const TABS: Tab[] = [
@@ -14,9 +18,11 @@ const TABS: Tab[] = [
     id: 'biblioteca',
     index: '01',
     title: 'Biblioteca local',
-    desc: 'Importa y lee tus multitracks directamente desde disco. Tu set queda disponible sin depender de internet.',
-    image: '/assets/gif/cargarVideo.gif',
-    alt: 'Biblioteca local de Play Worship cargando canciones desde el disco'
+    desc: 'Crea canciones e importa tus multitracks desde disco. Tu set queda disponible sin depender de internet.',
+    image: '/assets/gif/creacionDeCancion.gif',
+    alt: 'Creación de una canción desde la biblioteca local de Play Worship',
+    video: '/assets/video/creacionDeCancion-web.mp4',
+    poster: '/assets/video/creacionDeCancion-poster.jpg'
   },
   {
     id: 'secciones',
@@ -24,7 +30,9 @@ const TABS: Tab[] = [
     title: 'Secciones en waveform',
     desc: 'Marca intro, verso, coro, puente y final sobre el waveform y salta entre secciones al instante.',
     image: '/assets/gif/secciones.gif',
-    alt: 'Marcado de secciones en el waveform de Play Worship'
+    alt: 'Marcado de secciones en el waveform de Play Worship',
+    video: '/assets/video/secciones-web.mp4',
+    poster: '/assets/video/secciones-web-poster.jpg'
   },
   {
     id: 'interfaz',
@@ -32,7 +40,10 @@ const TABS: Tab[] = [
     title: 'Interfaz que se limpia sola',
     desc: 'Activa o oculta paneles con un toggle. En el ensayo mostrás todo; en vivo, solo lo esencial.',
     image: '/assets/gif/interfaceLimpia.gif',
-    alt: 'Paneles con toggle en la interfaz de Play Worship'
+    alt: 'Paneles de biblioteca, mezclador y pads activados u ocultos en Play Worship',
+    video: '/assets/video/espaciotrabajo-web.mp4',
+    poster: '/assets/video/espaciotrabajo-web-poster.jpg',
+    aspectRatio: '1280 / 804'
   },
   {
     id: 'pads',
@@ -122,19 +133,34 @@ export function TaskModule() {
             id={panelId}
             role="tabpanel"
             aria-labelledby={`task-tab-${activeId}`}
-            className="task-panel"
+            className={`task-panel${TABS[activeIndex].video ? ' task-panel-video' : ''}`}
+            style={TABS[activeIndex].aspectRatio ? { aspectRatio: TABS[activeIndex].aspectRatio } : undefined}
           >
-            {TABS.map((tab) => (
-              <img
-                key={tab.id}
-                className={`task-panel-image${tab.id === activeId ? ' is-active' : ''}`}
-                src={tab.image}
-                alt={tab.alt}
-                data-tab={tab.id}
-                decoding="async"
-                {...(tab.id === activeId ? {} : { hidden: true })}
-              />
-            ))}
+            {TABS.map((tab) =>
+              tab.video ? (
+                tab.id === activeId && (
+                  <LazyVideo
+                    key={tab.id}
+                    className="task-panel-image is-active"
+                    data-tab={tab.id}
+                    src={tab.video}
+                    poster={tab.poster}
+                    aria-label={tab.alt}
+                    fallback={<img src={tab.image} alt={tab.alt} />}
+                  />
+                )
+              ) : (
+                <img
+                  key={tab.id}
+                  className={`task-panel-image${tab.id === activeId ? ' is-active' : ''}`}
+                  src={tab.image}
+                  alt={tab.alt}
+                  data-tab={tab.id}
+                  decoding="async"
+                  {...(tab.id === activeId ? {} : { hidden: true })}
+                />
+              )
+            )}
           </div>
         </div>
       </div>

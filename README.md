@@ -42,9 +42,9 @@ landing-playworship/
     │   ├── Hero.tsx           # hero con CTA + dropdown + mockup
     │   ├── Aurora.tsx         # wrapper React del shader WebGL
     │   ├── Cinemagraph.tsx
+    │   ├── MobileApp.tsx      # video de la app móvil nativa
     │   ├── TaskModule.tsx     # tabs verticales (biblioteca, secciones, etc.)
     │   ├── BestPractices.tsx  # filas alternadas con mockups
-    │   ├── Access.tsx         # Escritorio / Control remoto
     │   ├── Pricing.tsx        # planes + toggle mensual/anual + Paddle
     │   ├── Faq.tsx            # accordion nativo <details>
     │   ├── CtaFinal.tsx
@@ -70,6 +70,29 @@ npm run build      # compila TS + bundle producción a dist/
 npm run preview    # sirve dist/ en http://localhost:4173
 npm run deploy     # build + firebase deploy --only hosting
 ```
+
+## Videos para la landing
+
+Para las demostraciones de la app usamos MP4 en lugar de GIF: mantiene el texto
+nítido y descarga mucho menos. El preset está en `scripts/encode-demo-video.sh`:
+H.264, 24 fps, ancho máximo de 1280 px sin ampliar el original, CRF 20,
+`preset slow`, `yuv420p`, `faststart` y sin audio. También genera un JPG de
+poster, tomado a los 3 segundos (o a mitad de los videos más cortos).
+
+Los videos de la página usan `LazyVideo`: primero muestran el póster, cargan el
+MP4 al acercarse al viewport y se pausan al salir. El hero usa `hero-web.mp4`
+en lugar del original de 85 MB. Firebase Hosting ya sirve estos recursos mediante
+su CDN; `firebase.json` excluye los MP4 originales que la página no utiliza.
+
+```bash
+bash scripts/encode-demo-video.sh public/assets/video/mi-demo.mp4
+# Genera mi-demo-web.mp4 y mi-demo-web-poster.jpg junto al original.
+```
+
+Se puede indicar una ruta de salida como segundo argumento. El script requiere
+`ffmpeg` y `ffprobe` y no sobrescribe archivos existentes. Al añadir un video a
+una sección, usar el MP4 optimizado en un `<video muted loop playsInline>` y el
+JPG como `poster`.
 
 ## Notas de la migración
 

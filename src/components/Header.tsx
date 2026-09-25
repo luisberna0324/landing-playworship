@@ -4,7 +4,7 @@ import { useScrolled } from '../hooks/useScrolled';
 const NAV_LINKS = [
   { href: '#features-tabs', label: 'Producto' },
   { href: '#best-practices', label: 'Funciones' },
-  { href: '#access', label: 'Plataformas' },
+  { href: '#mobile-app', label: 'Mobile' },
   { href: '#precios', label: 'Precios' },
   { href: '#faq', label: 'FAQ' },
   { href: 'https://t.me/+T9yAuOWOJiMwMGMx', label: 'Comunidad', external: true }

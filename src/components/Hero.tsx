@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import Aurora from './Aurora';
 import BorderGlow from './BorderGlow';
+import { LazyVideo } from './LazyVideo';
 import { useDisclosure } from '../hooks/useOutsideClick';
 import { useDownloads } from '../hooks/useDownloads';
 
@@ -174,18 +175,12 @@ export function Hero() {
         <div className="hero-mockup">
           <div className="mockup-glow" aria-hidden="true" />
           <div className="mockup-window">
-            <video
+            <LazyVideo
               className="hero-app-image"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster="/assets/video/hero-poster.jpg"
+              src="/assets/video/hero-web.mp4"
+              poster="/assets/video/hero-web-poster.jpg"
               aria-label="Play Worship reproduciendo un multitrack con su setlist y faders en vivo"
-            >
-              <source src="/assets/video/hero.mp4" type="video/mp4" />
-            </video>
+            />
           </div>
         </div>
       </div>

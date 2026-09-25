@@ -4,7 +4,17 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "assets/img/creacionDeCancion.mp4",
+      "assets/video/creacionDeCancion.mp4",
+      "assets/video/espaciotrabajo.mp4",
+      "assets/video/hero.mp4",
+      "assets/video/mobileNativo.mp4",
+      "assets/video/mobileapp.mp4",
+      "assets/video/salidasseparadas.mp4",
+      "assets/video/secciones.mp4",
+      "assets/video/setslistosservicio.mp4",
+      "assets/video/trasposicionsinpausa.mp4"
     ],
     "rewrites": [
       {

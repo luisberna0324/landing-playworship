@@ -6,9 +6,8 @@ export function Footer() {
     <footer className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand-col">
-          <a className="footer-brand" href="#top">
-            <img src="/assets/img/icono-pw.png" alt="" />
-            <span>Play Worship</span>
+          <a className="footer-brand" href="#top" aria-label="Play Worship, volver al inicio">
+            <img src="/assets/img/pwLogoSinFondo.png" alt="Play Worship" width="1920" height="709" />
           </a>
           <p className="footer-tag">
             Reproductor multitrack profesional para equipos de alabanza. Construido en comunidad.
@@ -49,7 +48,7 @@ export function Footer() {
             <h4>Producto</h4>
             <a href="#features-tabs">Casos de uso</a>
             <a href="#best-practices">Funciones</a>
-            <a href="#access">Plataformas</a>
+            <a href="#mobile-app">App móvil</a>
             <a href="#precios">Precios</a>
           </div>
           <div className="footer-col">

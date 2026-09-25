@@ -1,20 +1,16 @@
+import { LazyVideo } from './LazyVideo';
+
 const TELEGRAM_URL = 'https://t.me/+T9yAuOWOJiMwMGMx';
 
 export function Cinemagraph() {
   return (
     <section className="cinemagraph" aria-labelledby="cinemagraph-title">
-      <video
+      <LazyVideo
         className="cinemagraph-video"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
+        src="/assets/video/cinemagraph.mp4"
         poster="/assets/video/cinemagraph-poster.jpg"
         aria-hidden="true"
-      >
-        <source src="/assets/video/cinemagraph.mp4" type="video/mp4" />
-      </video>
+      />
       <div className="cinemagraph-tint" aria-hidden="true" />
       <div className="cinemagraph-noise" aria-hidden="true" />
       <div className="cinemagraph-vignette" aria-hidden="true" />
