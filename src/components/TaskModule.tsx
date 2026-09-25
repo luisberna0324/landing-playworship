@@ -1,5 +1,4 @@
-import { useId, useRef, useState, type KeyboardEvent } from 'react';
-import { LazyVideo } from './LazyVideo';
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 
 interface Tab {
   id: string;
@@ -57,11 +56,31 @@ const TABS: Tab[] = [
 
 export function TaskModule() {
   const [activeId, setActiveId] = useState<string>(TABS[0].id);
+  const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 1024px)').matches);
   const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const baseId = useId();
   const panelId = `${baseId}-panel`;
 
   const activeIndex = TABS.findIndex((t) => t.id === activeId);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 1024px)');
+    const update = () => setCompact(media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  const panel = (
+    <div
+      id={panelId}
+      role="tabpanel"
+      aria-labelledby={`task-tab-${activeId}`}
+      className={`task-panel${TABS[activeIndex].video ? ' task-panel-video' : ''}`}
+      style={TABS[activeIndex].aspectRatio ? { aspectRatio: TABS[activeIndex].aspectRatio } : undefined}
+    >
+      <TaskMedia key={activeId} tab={TABS[activeIndex]} />
+    </div>
+  );
 
   const focusTab = (index: number) => {
     const next = TABS[index];
@@ -95,23 +114,23 @@ export function TaskModule() {
         <div className="task-module-shell">
           <div
             className="task-tabs"
-            role="tablist"
-            aria-label="Casos de uso de Play Worship"
+            role={compact ? undefined : 'tablist'}
+            aria-label={compact ? undefined : 'Casos de uso de Play Worship'}
             onKeyDown={onKeyDown}
           >
             <span className="task-progress" aria-hidden="true" />
             {TABS.map((tab, idx) => {
               const isActive = tab.id === activeId;
-              return (
+              return <div className="task-tab-group" key={tab.id}>
                 <button
-                  key={tab.id}
                   ref={(el) => {
                     buttonsRef.current[idx] = el;
                   }}
                   id={`task-tab-${tab.id}`}
                   type="button"
-                  role="tab"
-                  aria-selected={isActive}
+                  role={compact ? undefined : 'tab'}
+                  aria-selected={compact ? undefined : isActive}
+                  aria-expanded={compact ? isActive : undefined}
                   aria-controls={panelId}
                   tabIndex={isActive ? 0 : -1}
                   className={`task-tab${isActive ? ' is-active' : ''}`}
@@ -125,45 +144,40 @@ export function TaskModule() {
                     </span>
                   </span>
                 </button>
-              );
+                {compact && isActive && panel}
+              </div>;
             })}
           </div>
-
-          <div
-            id={panelId}
-            role="tabpanel"
-            aria-labelledby={`task-tab-${activeId}`}
-            className={`task-panel${TABS[activeIndex].video ? ' task-panel-video' : ''}`}
-            style={TABS[activeIndex].aspectRatio ? { aspectRatio: TABS[activeIndex].aspectRatio } : undefined}
-          >
-            {TABS.map((tab) =>
-              tab.video ? (
-                tab.id === activeId && (
-                  <LazyVideo
-                    key={tab.id}
-                    className="task-panel-image is-active"
-                    data-tab={tab.id}
-                    src={tab.video}
-                    poster={tab.poster}
-                    aria-label={tab.alt}
-                    fallback={<img src={tab.image} alt={tab.alt} />}
-                  />
-                )
-              ) : (
-                <img
-                  key={tab.id}
-                  className={`task-panel-image${tab.id === activeId ? ' is-active' : ''}`}
-                  src={tab.image}
-                  alt={tab.alt}
-                  data-tab={tab.id}
-                  decoding="async"
-                  {...(tab.id === activeId ? {} : { hidden: true })}
-                />
-              )
-            )}
-          </div>
+          {!compact && panel}
         </div>
       </div>
     </section>
+  );
+}
+
+function TaskMedia({ tab }: { tab: Tab }) {
+  const [hasFrame, setHasFrame] = useState(false);
+
+  if (!tab.video) {
+    return <img className="task-panel-image is-active" src={tab.image} alt={tab.alt} decoding="async" />;
+  }
+
+  return (
+    <>
+      <img className="task-panel-image is-active" src={tab.poster} alt={tab.alt} decoding="async" />
+      <video
+        className={`task-panel-image task-panel-playback${hasFrame ? ' is-active' : ''}`}
+        src={tab.video}
+        poster={tab.poster}
+        aria-label={tab.alt}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        onLoadedData={() => setHasFrame(true)}
+        onError={() => setHasFrame(false)}
+      />
+    </>
   );
 }

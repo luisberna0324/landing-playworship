@@ -533,6 +533,7 @@ section{padding:6rem 2rem}
   gap:.6rem;
   padding:.5rem 0;
 }
+.task-tab-group{display:flex;flex-direction:column;min-width:0}
 .task-progress{
   position:absolute;
   left:.9rem;
@@ -544,6 +545,7 @@ section{padding:6rem 2rem}
   pointer-events:none;
 }
 .task-tab{
+  width:100%;
   text-align:left;
   padding:1.4rem 1rem 1.4rem 3rem;
   border-radius:10px;
@@ -620,6 +622,8 @@ section{padding:6rem 2rem}
 }
 .task-panel-image.is-active{opacity:1}
 video.task-panel-image{object-fit:contain;background:#0a0e0b}
+.task-panel-playback{opacity:0}
+.task-panel-playback.is-active{opacity:1}
 
 /* ============== BEST PRACTICES (ALTERNATING) ============== */
 .best-practices{padding-top:7rem;padding-bottom:3rem}
@@ -1063,6 +1067,7 @@ video.task-panel-image{object-fit:contain;background:#0a0e0b}
   .task-panel{min-height:340px}
   .task-panel-video{min-height:0}
   .task-panel-image{object-fit:contain;background:#0a0e0b}
+  .task-tab-group .task-panel{margin:.6rem 0 1rem;min-height:0;aspect-ratio:1280/870;width:100%}
   .bp-row{grid-template-columns:1fr;gap:2rem;padding:2.5rem 0}
   .bp-row-reverse .bp-copy{order:1}
   .bp-row-reverse .bp-media{order:2}
