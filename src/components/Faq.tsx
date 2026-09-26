@@ -18,8 +18,8 @@ const ITEMS: FaqItem[] = [
     question: '¿Necesito internet para usarlo?',
     answer: (
       <p>
-        No. La biblioteca se carga desde disco y todo el audio corre en local. Solo necesitás
-        conexión para descargar la app y recibir actualizaciones.
+        No para usar PlayWorship Local. La biblioteca se carga desde disco y el audio corre en tu
+        dispositivo. Para hacer backup y sincronizar con PlayWorship Cloud sí necesitás conexión.
       </p>
     )
   },
@@ -33,12 +33,12 @@ const ITEMS: FaqItem[] = [
     )
   },
   {
-    question: '¿Qué pasa con la licencia? ¿Tiene costo?',
+    question: '¿PlayWorship tiene costo?',
     answer: (
       <p>
-        Durante esta etapa el acceso es gratuito. Cuando publiquemos los planes pagos, tendrán un
-        precio pensado para iglesias y ministerios chicos. Los miembros activos de la comunidad van
-        a tener beneficios al lanzamiento.
+        PlayWorship Local es gratis, incluso para proyectos offline. Solo pagás si elegís
+        PlayWorship Cloud para guardar tu biblioteca en la nube y sincronizarla entre dispositivos.
+        Hay planes de 300 GB y 500 GB con pago mensual o anual.
       </p>
     )
   },

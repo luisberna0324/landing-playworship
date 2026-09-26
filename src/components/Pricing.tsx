@@ -12,122 +12,92 @@ interface Plan {
   featured?: boolean;
   badge?: string;
   features: string[];
-  cta: { label: string; kind: 'telegram' | 'paddle'; priceIds?: { monthly: string; annual: string } };
+  priceIds?: { monthly: string; annual: string };
 }
 
 const PLANS: Plan[] = [
   {
-    name: 'Acceso Gratuito',
+    name: 'PlayWorship Local',
     monthly: '0',
     annual: '0',
-    desc: 'Descargalo, probalo con tu equipo y usalo en servicios reales sin costo.',
-    featured: true,
-    badge: 'Actualmente',
+    desc: 'Tu biblioteca y tu música, siempre disponibles en tu equipo.',
+    badge: 'Gratis para siempre',
     features: [
-      'Uso completo durante esta etapa',
-      'Ideal para probar en ensayos y en vivo',
-      'Sin tarjeta de crédito',
-      'Precio futuro pensado para ser muy accesible'
-    ],
-    cta: { label: 'Entrar al grupo y empezar', kind: 'telegram' }
+      'Proyectos y biblioteca en tu dispositivo',
+      'Reproducción multitrack y herramientas musicales',
+      'Uso offline, sin suscripción'
+    ]
   },
   {
-    name: 'Starter',
-    monthly: '10',
-    annual: '100',
-    desc: 'Para comenzar con lo esencial. 7 días de prueba gratis.',
+    name: 'PlayWorship Cloud 300',
+    monthly: '5,99',
+    annual: '59,99',
+    desc: 'Llevá tu biblioteca a la nube y mantenela disponible entre dispositivos.',
+    featured: true,
+    badge: '300 GB',
     features: [
-      'Biblioteca y reproducción multitrack',
-      'Control de tonalidad y tempo',
-      '7 días de prueba gratis'
+      '300 GB de almacenamiento en la nube',
+      'Backup de tu biblioteca',
+      'Sincronización entre dispositivos',
+      'Todas las funciones de PlayWorship Local'
     ],
-    cta: {
-      label: 'Comenzar prueba gratis',
-      kind: 'paddle',
-      priceIds: {
-        monthly: 'pri_01m210badgsy0d6sxgf0sswfsk',
-        annual: 'pri_01m210basty4f3qavtqfstzpjr'
-      }
+    priceIds: {
+      monthly: 'pri_01m3dv52328p83hj3e24bqvtxy',
+      annual: 'pri_01m3dv534kjkgcarvzbyfanr9p'
     }
   },
   {
-    name: 'Pro',
-    monthly: '40',
-    annual: '400',
-    desc: 'Para músicos y equipos en crecimiento. 7 días de prueba gratis.',
-    featured: true,
-    badge: 'Recomendado',
+    name: 'PlayWorship Cloud 500',
+    monthly: '8,99',
+    annual: '89,99',
+    desc: 'Más espacio para los equipos que necesitan crecer sin dejar su música atrás.',
+    badge: '500 GB',
     features: [
-      'Todo lo de Starter',
-      'Más dispositivos y funciones de equipo',
-      '7 días de prueba gratis'
+      '500 GB de almacenamiento en la nube',
+      'Backup de tu biblioteca',
+      'Sincronización entre dispositivos',
+      'Todas las funciones de PlayWorship Local'
     ],
-    cta: {
-      label: 'Comenzar prueba gratis',
-      kind: 'paddle',
-      priceIds: {
-        monthly: 'pri_01m210bb3mmbf49f31bnfjcwc9',
-        annual: 'pri_01m210bb8pxx54p29513e52s7y'
-      }
-    }
-  },
-  {
-    name: 'Advanced',
-    monthly: '120',
-    annual: '1200',
-    desc: 'Para operaciones con mayores necesidades. 7 días de prueba gratis.',
-    features: [
-      'Todo lo de Pro',
-      'Capacidad ampliada para equipos',
-      '7 días de prueba gratis'
-    ],
-    cta: {
-      label: 'Comenzar prueba gratis',
-      kind: 'paddle',
-      priceIds: {
-        monthly: 'pri_01m210bbj99dce8enf81f7zg95',
-        annual: 'pri_01m210bbpfpdr88f5dd37ahb24'
-      }
+    priceIds: {
+      monthly: 'pri_01m3dv5419p1h1qvre5sg3nasb',
+      annual: 'pri_01m3dv54cfcgwdpsfa6pvbbfk0'
     }
   }
 ];
 
 function PlanPrice({ plan, billing }: { plan: Plan; billing: Billing }) {
-  if (plan.cta.kind === 'telegram') {
-    return (
-      <div className="plan-price">
-        <sup>$</sup>0
-      </div>
-    );
-  }
   const value = billing === 'annual' ? plan.annual : plan.monthly;
   const suffix = billing === 'annual' ? '/año' : '/mes';
   return (
     <div className="plan-price">
-      <sup>$</sup>
+      <span className="plan-currency">US$</span>
       {value}
-      <sub>{suffix}</sub>
+      <sub>{plan.priceIds ? suffix : ''}</sub>
     </div>
   );
 }
 
 function PlanCta({ plan }: { plan: Plan }) {
-  if (plan.cta.kind === 'telegram') {
+  if (!plan.priceIds) {
+    return <a className="plan-btn plan-btn-main" href="#top">Descargar gratis</a>;
+  }
+
+  if (!import.meta.env.DEV) {
     return (
-      <a className="plan-btn plan-btn-main" href={TELEGRAM_URL} target="_blank" rel="noopener">
-        {plan.cta.label}
+      <a className="plan-btn plan-btn-main" href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer">
+        Consultar por Cloud
       </a>
     );
   }
-  const { monthly, annual } = plan.cta.priceIds!;
+
   return (
     <button
       className="plan-btn plan-btn-main paddle-checkout"
       type="button"
-      data-monthly-price-id={monthly}
-      data-annual-price-id={annual}
+      data-monthly-price-id={plan.priceIds.monthly}
+      data-annual-price-id={plan.priceIds.annual}
     >
-      {plan.cta.label}
+      Probar checkout Sandbox
     </button>
   );
 }
@@ -138,40 +108,28 @@ export function Pricing() {
   usePaddle(rootRef);
 
   return (
-    <section
-      ref={rootRef}
-      className="pricing"
-      id="precios"
-      aria-labelledby="pricing-title"
-    >
+    <section ref={rootRef} className="pricing" id="precios" aria-labelledby="pricing-title" data-billing={billing}>
       <div className="container">
         <div className="pricing-header">
-          <h2 id="pricing-title" className="section-heading">
-            Acceso abierto mientras construimos en comunidad
-          </h2>
+          <h2 id="pricing-title" className="section-heading">PlayWorship es gratis. La nube es opcional.</h2>
           <p className="section-sub">
-            Hoy podés probar Play Worship sin costo. Más adelante tendrá un precio súper accesible
-            para iglesias y ministerios.
+            Usá PlayWorship local sin costo y sin conexión. Pagá sólo si querés guardar tu biblioteca
+            en la nube y sincronizarla entre tus dispositivos.
           </p>
           <div className="billing-switch" role="group" aria-label="Frecuencia de cobro">
             <button
               className={`billing-option${billing === 'monthly' ? ' is-active' : ''}`}
-              data-billing="monthly"
               type="button"
               aria-pressed={billing === 'monthly'}
               onClick={() => setBilling('monthly')}
-            >
-              Mensual
-            </button>
+            >Mensual</button>
             <button
               className={`billing-option${billing === 'annual' ? ' is-active' : ''}`}
-              data-billing="annual"
               type="button"
               aria-pressed={billing === 'annual'}
               onClick={() => setBilling('annual')}
-            >
-              Anual
-            </button>
+              aria-label="Anual, ahorro aproximado del 17%"
+            >Anual · -17%</button>
           </div>
         </div>
         <div className="pricing-grid">
@@ -183,16 +141,14 @@ export function Pricing() {
               <div className="plan-desc">{plan.desc}</div>
               <ul className="plan-features">
                 {plan.features.map((feature) => (
-                  <li key={feature}>
-                    <span className="pf-check">✓</span>
-                    <span>{feature}</span>
-                  </li>
+                  <li key={feature}><span className="pf-check" aria-hidden="true">✓</span><span>{feature}</span></li>
                 ))}
               </ul>
               <PlanCta plan={plan} />
             </div>
           ))}
         </div>
+        <p className="pricing-note">Los planes Cloud son opcionales. Los precios se muestran en USD.</p>
       </div>
     </section>
   );
