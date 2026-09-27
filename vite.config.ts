@@ -13,6 +13,10 @@ export default defineConfig({
     port: 5173,
     host: true,
     proxy: {
+      '/api/paddle': {
+        target: 'http://127.0.0.1:3001',
+        changeOrigin: true,
+      },
       '/api/downloads/latest.json': {
         target: 'https://storage.googleapis.com',
         changeOrigin: true,

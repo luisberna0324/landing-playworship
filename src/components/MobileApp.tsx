@@ -7,11 +7,11 @@ export function MobileApp() {
         <div className="mobile-app-copy">
           <div className="section-label">Play Worship Mobile</div>
           <h2 id="mobile-app-title" className="section-heading">
-            Toda la potencia del escritorio, en tu celular
+            Toda la potencia del escritorio, en tu teléfono
           </h2>
           <p className="mobile-app-desc">
-            Prepará tu setlist, reproducí multitracks, navegá secciones y ajustá la tonalidad y la
-            mezcla desde tu teléfono o tablet. Las herramientas que usás en escritorio, ahora en
+            Prepara tu setlist, reproduce multitracks, navega por secciones y ajusta la tonalidad y la
+            mezcla desde tu teléfono o tableta. Las herramientas que usas en el escritorio, ahora en
             una experiencia móvil nativa para dirigir el servicio.
           </p>
           <a className="mobile-app-link" href="#top">

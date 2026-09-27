@@ -164,7 +164,7 @@ export function Hero() {
                     <rect x="3" y="6" width="7" height="12" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.5" />
                     <rect x="12" y="3" width="9" height="18" rx="1.6" fill="none" stroke="currentColor" strokeWidth="1.5" />
                   </svg>
-                  <small>Android .apk · Celular y tablet</small>
+                  <small>Android .apk · Teléfono y tableta</small>
                 </span>
                 {!usingFallback && <small className="download-version">v{downloads.version}</small>}
               </span>

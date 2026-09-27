@@ -8,9 +8,9 @@ const ITEMS: FaqItem[] = [
     question: '¿En qué sistemas operativos funciona Play Worship?',
     answer: (
       <p>
-        Hoy se descarga para <strong>Windows 10 y 11</strong> con instalador firmado.{' '}
-        <strong>macOS</strong> está en preparación y los miembros del grupo de Telegram tienen
-        acceso anticipado.
+        Puedes descargarla para <strong>Windows 10 y 11</strong> y <strong>macOS</strong>.
+        También hay una versión para Android; iOS está en preparación. Consulta el menú de
+        descargas para ver la disponibilidad de cada plataforma.
       </p>
     )
   },
@@ -19,7 +19,8 @@ const ITEMS: FaqItem[] = [
     answer: (
       <p>
         No para usar PlayWorship Local. La biblioteca se carga desde disco y el audio corre en tu
-        dispositivo. Para hacer backup y sincronizar con PlayWorship Cloud sí necesitás conexión.
+        dispositivo. Para crear una copia de seguridad y sincronizar con PlayWorship Cloud sí
+        necesitas conexión.
       </p>
     )
   },
@@ -27,8 +28,19 @@ const ITEMS: FaqItem[] = [
     question: '¿Funciona con mi interfaz de audio?',
     answer: (
       <p>
-        Sí. Es compatible con cualquier interfaz ASIO en Windows y con WASAPI. Podés enrutar click
+        Sí. Es compatible con interfaces ASIO en Windows y con WASAPI. Puedes enviar el click
         al IEM del músico y la mezcla al FOH por separado.
+      </p>
+    )
+  },
+  {
+    question: '¿Venden o distribuyen los archivos que guardo en Cloud?',
+    answer: (
+      <p>
+        No. El contenido sigue siendo tuyo: LUJUMA SYSTEM SAS no vende ni distribuye los archivos
+        guardados en Cloud ni los pone a disposición de otros usuarios. Se procesan únicamente
+        para ofrecer el almacenamiento, respaldo y sincronización que solicitas. Consulta la{' '}
+        <a href="/legal/privacidad.html">Política de privacidad</a> para más información.
       </p>
     )
   },
@@ -36,7 +48,7 @@ const ITEMS: FaqItem[] = [
     question: '¿PlayWorship tiene costo?',
     answer: (
       <p>
-        PlayWorship Local es gratis, incluso para proyectos offline. Solo pagás si elegís
+        PlayWorship Local es gratis, incluso para proyectos sin conexión. Solo pagas si eliges
         PlayWorship Cloud para guardar tu biblioteca en la nube y sincronizarla entre dispositivos.
         Hay planes de 300 GB y 500 GB con pago mensual o anual.
       </p>
@@ -46,22 +58,22 @@ const ITEMS: FaqItem[] = [
     question: '¿Cómo instalo Play Worship?',
     answer: (
       <p>
-        Entrá al grupo de Telegram y pedí el enlace al instalador. Es un <code>.exe</code>{' '}
-        firmado en menos de 2 minutos, sin dependencias raras.
+        Abre las opciones de descarga y elige tu plataforma. En Windows, descarga el instalador{' '}
+        <code>.exe</code> y sigue las instrucciones.
       </p>
     )
   },
   {
-    question: '¿Puedo controlar la app desde el celular?',
+    question: '¿Puedo controlar la aplicación desde el teléfono?',
     answer: (
       <p>
-        Todavía estamos definiendo la experiencia de control remoto desde el celular. Compartiremos
+        Todavía estamos definiendo la experiencia de control remoto desde el teléfono. Compartiremos
         los detalles de funcionamiento y compatibilidad cuando estén listos.
       </p>
     )
   },
   {
-    question: '¿Cómo reporto un bug o pido una función?',
+    question: '¿Cómo reporto un error o sugiero una función?',
     answer: (
       <p>
         El grupo de Telegram es el canal principal. Ahí conversamos con músicos, líderes y

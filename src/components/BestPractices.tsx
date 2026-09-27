@@ -12,8 +12,8 @@ export function BestPractices() {
           <div className="bp-copy">
             <h3 className="bp-title">Sets listos para el servicio</h3>
             <p className="bp-desc">
-              Importa tus canciones, ordená el setlist y dejá todo preparado. Tu equipo llega y el
-              sistema ya está armado: solo tocás play y dirigís.
+              Importa tus canciones, organiza el setlist y deja todo preparado. Cuando llegue tu
+              equipo, solo tendrás que iniciar la reproducción y dirigir el servicio.
             </p>
           </div>
           <div className="bp-media">
@@ -31,7 +31,7 @@ export function BestPractices() {
           <div className="bp-copy">
             <h3 className="bp-title">Transposición sin pausas</h3>
             <p className="bp-desc">
-              Cambiá la tonalidad en vivo con el algoritmo SoundTouch de alta fidelidad. Sin
+              Cambia la tonalidad en vivo con el algoritmo SoundTouch de alta fidelidad. Sin
               artefactos y sin latencia perceptible.
             </p>
           </div>
@@ -49,8 +49,8 @@ export function BestPractices() {
           <div className="bp-copy">
             <h3 className="bp-title">Salidas separadas para FOH e IEM</h3>
             <p className="bp-desc">
-              Enrutá el click al oído del músico y la mezcla de sala al FOH con tu interfaz de audio.
-              Asigná salidas por tipo de canal desde un solo lugar.
+              Envía el click al IEM del músico y la mezcla de sala al FOH con tu interfaz de audio.
+              Asigna salidas por tipo de canal desde un solo lugar.
             </p>
           </div>
           <div className="bp-media">

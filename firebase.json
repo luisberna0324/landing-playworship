@@ -18,6 +18,10 @@
     ],
     "rewrites": [
       {
+        "source": "/api/paddle/config",
+        "run": { "serviceId": "playworship", "region": "us-east1" }
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

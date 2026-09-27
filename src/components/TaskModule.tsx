@@ -37,7 +37,7 @@ const TABS: Tab[] = [
     id: 'interfaz',
     index: '03',
     title: 'Interfaz que se limpia sola',
-    desc: 'Activa o oculta paneles con un toggle. En el ensayo mostrás todo; en vivo, solo lo esencial.',
+    desc: 'Activa u oculta paneles. Muestra todo en el ensayo y solo lo esencial en vivo.',
     image: '/assets/gif/interfaceLimpia.gif',
     alt: 'Paneles de biblioteca, mezclador y pads activados u ocultos en Play Worship',
     video: '/assets/video/espaciotrabajo-web.mp4',

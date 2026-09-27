@@ -824,7 +824,13 @@ video.task-panel-image{object-fit:contain;background:#0a0e0b}
   background:var(--orange);color:#08220f;
 }
 .plan-btn:hover{transform:translateY(-1px);opacity:.92}
+.plan-btn:disabled{opacity:.65;cursor:wait;transform:none}
 .pricing-note{font-family:var(--mono);font-size:.76rem;color:var(--muted);text-align:center;margin-top:1.5rem}
+.pricing-checkout-error,.pricing-checkout-warning{
+  font:.76rem/1.5 var(--mono);text-align:center;margin:1rem auto 0;max-width:40rem;
+}
+.pricing-checkout-error{color:#ffb1a8}
+.pricing-checkout-warning{color:#f5ce85}
 
 /* ============== FAQ ============== */
 .faq{background:var(--bg2);border-top:.5px solid var(--border)}

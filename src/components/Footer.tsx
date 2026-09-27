@@ -49,7 +49,7 @@ export function Footer() {
             <a href="#features-tabs">Casos de uso</a>
             <a href="#best-practices">Funciones</a>
             <a href="#mobile-app">App móvil</a>
-            <a href="#precios">Precios</a>
+            <a href="/precios.html">Precios</a>
           </div>
           <div className="footer-col">
             <h4>Comunidad</h4>
@@ -62,13 +62,16 @@ export function Footer() {
           <div className="footer-col">
             <h4>Recursos</h4>
             <a href="#best-practices">Guía rápida</a>
-            <a href={EMAIL}>Reportar bug</a>
+            <a href="https://api.playworship.app/account">Cuenta y facturación</a>
+            <a href={EMAIL}>Reportar un error</a>
             <a href={EMAIL}>Pedir función</a>
           </div>
           <div className="footer-col">
             <h4>Legal</h4>
-            <a href="#">Términos</a>
-            <a href="#">Privacidad</a>
+            <a href="/legal/terminos.html">Términos</a>
+            <a href="/legal/privacidad.html">Privacidad</a>
+            <a href="/legal/reembolsos.html">Reembolsos</a>
+            <a href="/legal/copyright.html">Copyright</a>
           </div>
         </div>
       </div>

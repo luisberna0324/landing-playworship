@@ -7,10 +7,10 @@ export function CtaFinal() {
       <div className="container">
         <div className="section-label">¿Listo para empezar?</div>
         <h2 className="cta-title">
-          Llevá tu alabanza al <em>siguiente nivel</em>
+          Lleva tu alabanza al <em>siguiente nivel</em>
         </h2>
         <p className="cta-sub">
-          Descarga gratis, sin tarjeta de crédito. Unite al grupo y empezá a probar Play Worship en
+          Descarga gratis, sin tarjeta de crédito. Únete al grupo y empieza a probar Play Worship en
           tu equipo esta semana.
         </p>
         <div className="cta-actions">

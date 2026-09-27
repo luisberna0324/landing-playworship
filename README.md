@@ -45,7 +45,7 @@ landing-playworship/
     │   ├── MobileApp.tsx      # video de la app móvil nativa
     │   ├── TaskModule.tsx     # tabs verticales (biblioteca, secciones, etc.)
     │   ├── BestPractices.tsx  # filas alternadas con mockups
-    │   ├── Pricing.tsx        # planes + toggle mensual/anual + Paddle
+    │   ├── Pricing.tsx        # planes + checkout overlay de Paddle
     │   ├── Faq.tsx            # accordion nativo <details>
     │   ├── CtaFinal.tsx
     │   └── Footer.tsx
@@ -55,7 +55,6 @@ landing-playworship/
     │   ├── useScrolled.ts     # sticky shadow al hacer scroll
     │   ├── useReveal.ts       # IntersectionObserver para .reveal
     │   ├── useOutsideClick.ts # genérico para dropdowns/menus
-    │   └── usePaddle.ts       # carga Paddle.js + binding de checkout
     └── lib/
         └── auroraShader.ts    # GLSL + setup de ogl (pausa por viewport,
                                # respeta prefers-reduced-motion)
@@ -107,9 +106,19 @@ JPG como `poster`.
   `ogl` desde `node_modules`. Misma lógica de pausa por viewport y
   `prefers-reduced-motion`.
 - **Interacciones**: el vanilla `main.js` se partió en hooks reutilizables
-  (`useScrolled`, `useReveal`, `useOutsideClick`, `usePaddle`) y estado local
-  por componente. El toggle de pricing se maneja vía `BillingContext` para que
-  el checkout de Paddle reciba el `price-id` correcto en cada cambio.
+  (`useScrolled`, `useReveal`, `useOutsideClick`) y estado local
+  por componente. El toggle de pricing se maneja vía `BillingContext`.
+  Los botones Cloud abren el checkout de Paddle sobre esta página, sin correo
+  ni inicio de sesión previo. En desarrollo, Vite consulta `/api/paddle/config`
+  al backend local en el puerto 3001. En producción, el checkout se habilita
+  con `VITE_CLOUD_CHECKOUT_ENABLED=true` sólo después de desplegar el backend,
+  configurar el webhook y verificar la compra Sandbox. Firebase Hosting
+  redirige únicamente `/api/paddle/config` a Cloud Run; la landing no recibe
+  datos de tarjeta ni procesa webhooks.
+  Para validar Sandbox en el sitio publicado sin mostrar pagos de prueba a todos,
+  abrí `/?sandbox=1#precios`. Esa URL revela los botones de prueba y consulta
+  `/api/paddle/config?mode=sandbox`; la vista normal conserva «Consultar por Cloud».
+  El backend limita la activación de Cloud a una cuenta sintética durante esta fase.
 - **Firebase**: `firebase.json` ahora apunta `public` a `dist/` y agrega un
   rewrite global a `/index.html` (SPA fallback por si en el futuro se agregan
   rutas).
@@ -119,5 +128,3 @@ JPG como `poster`.
 - ESLint + Prettier (no incluidos para mantener el PR chico).
 - Tests (Vitest + React Testing Library) si el proyecto crece más allá de
   una landing.
-- Hidratar `Paddle.Initialize` sólo en cliente (`useEffect` ya lo hace, pero
-  el cast a `window.Paddle` puede endurecerse con `@types/paddle-js`).
