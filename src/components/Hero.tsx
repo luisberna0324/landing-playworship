@@ -5,10 +5,40 @@ import { LazyVideo } from './LazyVideo';
 import { useDisclosure } from '../hooks/useOutsideClick';
 import { useDownloads } from '../hooks/useDownloads';
 
+type VisitorPlatform = 'windows' | 'macos' | 'android' | 'ios' | 'other';
+
+function detectPlatform(): VisitorPlatform {
+  const userAgent = navigator.userAgent;
+  if (/Android/i.test(userAgent)) return 'android';
+  if (/iPhone|iPad|iPod/i.test(userAgent) || (/Macintosh/i.test(userAgent) && navigator.maxTouchPoints > 1)) return 'ios';
+  if (/Windows/i.test(userAgent)) return 'windows';
+  if (/Macintosh|Mac OS X/i.test(userAgent)) return 'macos';
+  return 'other';
+}
+
 export function Hero() {
   const { open, toggle, close, ref } = useDisclosure(false);
   const { downloads, usingFallback } = useDownloads();
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const platform = detectPlatform();
+  const selectedDownload = platform === 'windows' || platform === 'macos' || platform === 'android'
+    ? downloads.platforms[platform]
+    : null;
+  const primaryLabel = platform === 'windows' ? 'Descargar para Windows'
+    : platform === 'macos' ? 'Descargar para macOS'
+    : platform === 'android' ? 'Descargar para Android'
+    : 'Ver descargas disponibles';
+  const packageLabel = platform === 'windows' ? 'Instalador .exe (64 bits)'
+    : platform === 'macos' ? 'Instalador .pkg'
+    : platform === 'android' ? (usingFallback ? 'APK beta' : 'APK (arm64)')
+    : '';
+  const versionLabel = usingFallback
+    ? platform === 'android' ? 'versión no verificada' : 'enlace alternativo v2.0.2'
+    : `versión disponible ${downloads.version}`;
+  const buttonDetail = platform === 'windows' ? `${usingFallback ? 'v2.0.2' : `v${downloads.version}`} · .exe 64 bits`
+    : platform === 'macos' ? `${usingFallback ? 'v2.0.2' : `v${downloads.version}`} · .pkg`
+    : platform === 'android' ? usingFallback ? 'APK beta · versión sin verificar' : `v${downloads.version} · .apk arm64`
+    : '';
 
   return (
     <section className="hero" id="top">
@@ -54,13 +84,27 @@ export function Hero() {
             fillOpacity={0.18}
           >
             <div className="download-cta-group">
-              <a className="btn-primary download-button" href={downloads.platforms.windows.url}>
-                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                  <path d="M3 5.5 11 4v9H3V5.5Zm10 7V4l11-1.5v9.6H13Zm-10 2H11v8.2L3 21.5v-7Z" fill="currentColor" />
-                </svg>
-                <span className="download-label-full">Descargar para Windows</span>
-                <span className="download-label-compact">Descargar app</span>
-              </a>
+              {selectedDownload?.available && selectedDownload.url ? (
+                <a className="btn-primary download-button" href={selectedDownload.url} aria-label={`${primaryLabel}: ${packageLabel}, ${versionLabel}`}>
+                  {platform === 'macos' ? (
+                    <img className="download-button-icon" src="/assets/icons/apple.svg" alt="" aria-hidden="true" />
+                  ) : platform === 'android' ? (
+                    <img className="download-button-icon" src="/assets/icons/android.svg" alt="" aria-hidden="true" />
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                      <path d="M3 5.5 11 4v9H3V5.5Zm10 7V4l11-1.5v9.6H13Zm-10 2H11v8.2L3 21.5v-7Z" fill="currentColor" />
+                    </svg>
+                  )}
+                  <span className="download-button-copy">
+                    <span>{primaryLabel}</span>
+                    <small>{buttonDetail}</small>
+                  </span>
+                </a>
+              ) : (
+                <button type="button" className="btn-primary download-button" onClick={toggle}>
+                  <span>{primaryLabel}</span>
+                </button>
+              )}
               <button
                 type="button"
                 className="download-dropdown-toggle"

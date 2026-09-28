@@ -292,17 +292,19 @@ section{padding:6rem 2rem}
   justify-content:center;
   gap:.7rem;
   font-size:.9rem;
-  min-height:58px;
+  min-height:66px;
   white-space:nowrap;
   color:var(--text);
   background:transparent;
   box-shadow:none;
 }
 .download-cta-group .download-button svg{width:20px;height:20px;color:#fff}
+.download-cta-group .download-button .download-button-icon{width:20px;height:20px;filter:brightness(0) invert(1)}
 .download-cta-group .download-button:hover{background:rgba(255,255,255,.07);box-shadow:none;transform:none}
-.download-label-compact{display:none}
+.download-button-copy{display:flex;flex-direction:column;align-items:center;gap:.15rem;line-height:1.2}
+.download-button-copy small{font-size:.7rem;font-weight:400;color:var(--muted)}
 .download-dropdown-toggle{
-  width:56px;min-height:58px;
+  width:56px;min-height:66px;
   flex:0 0 56px;
   background:transparent;
   color:var(--muted);
@@ -1145,7 +1147,7 @@ video.task-panel-image{object-fit:contain;background:#0a0e0b}
   .download-cta-group .download-button{
     flex:1;
     min-width:0;
-    min-height:52px;
+    min-height:62px;
     justify-content:center;
     padding:.75rem .9rem;
     font-size:.8rem;
@@ -1158,9 +1160,11 @@ video.task-panel-image{object-fit:contain;background:#0a0e0b}
   }
   .download-cta-group .download-button:hover{background:rgba(255,255,255,.055);box-shadow:none}
   .download-cta-group .download-button svg{width:18px;height:18px}
+  .download-cta-group .download-button .download-button-icon{width:18px;height:18px}
+  .download-button-copy small{font-size:.62rem}
   .download-dropdown-toggle{
     width:48px;
-    min-height:52px;
+    min-height:62px;
     flex-basis:48px;
     background:transparent;
     color:var(--muted);
@@ -1177,8 +1181,6 @@ video.task-panel-image{object-fit:contain;background:#0a0e0b}
   .download-device-meta .device-icon-mobile{width:15px;height:15px}
   .download-menu-item strong{font-size:.8rem}
   .download-menu-item small,.download-menu-item em{font-size:.62rem}
-  .download-label-full{display:inline}
-  .download-label-compact{display:none}
   .hero{padding:var(--header-overlap) 1rem 2.5rem}
   .hero-subtitle{font-size:.84rem;line-height:1.7;margin-bottom:2rem}
   .hero-platforms-note{font-size:.64rem;line-height:1.6;padding:0 .4rem}

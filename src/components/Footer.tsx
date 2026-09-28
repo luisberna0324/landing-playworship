@@ -77,7 +77,7 @@ export function Footer() {
       </div>
       <div className="footer-bottom">
         <span>© 2026 Play Worship · Hecho con ❤ para la iglesia latinoamericana</span>
-        <span>Compatible con Windows 10 / 11 · macOS próximamente</span>
+        <span>Disponible para Windows 10 / 11, macOS y Android · iOS en preparación</span>
       </div>
     </footer>
   );
