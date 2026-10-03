@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import Aurora from './Aurora';
 import BorderGlow from './BorderGlow';
 import { LazyVideo } from './LazyVideo';
+import { BrandLogo } from './BrandLogo';
 import { useDisclosure } from '../hooks/useOutsideClick';
 import { useDownloads } from '../hooks/useDownloads';
 
@@ -44,23 +45,16 @@ export function Hero() {
     <section className="hero" id="top">
       <Aurora
         className="aurora-bg"
-        colorStops={['#7cff67', '#B497CF', '#5227FF']}
+        colorStops={['#d7eedd', '#edf5ef', '#dfeee4']}
         amplitude={1.0}
         blend={0.5}
-        speed={0.8}
+        speed={0.35}
+        lightMode
         respectReducedMotion
       />
       <div className="hero-inner">
         <h1 className="hero-title">
-          <img
-            src="/assets/img/pwLogoSinFondo.png"
-            alt="Play Worship"
-            className="hero-logo"
-            width="1920"
-            height="709"
-            decoding="async"
-            fetchPriority="high"
-          />
+          <BrandLogo className="hero-logo" priority />
         </h1>
         <p className="hero-subtitle">
           <span>Reproductor multitrack profesional para tu equipo de alabanza.</span>
@@ -74,14 +68,14 @@ export function Hero() {
             className="download-border-glow"
             edgeSensitivity={26}
             glowColor="142 71 48"
-            backgroundColor="#303532"
+            backgroundColor="var(--accent)"
             borderRadius={18}
-            glowRadius={24}
-            glowIntensity={0.8}
+            glowRadius={12}
+            glowIntensity={0.28}
             coneSpread={23}
             animated
-            colors={['#1DB954', '#1ED760', '#86EFAC']}
-            fillOpacity={0.18}
+            colors={['#176B3A', '#64A879', '#CAE6D1']}
+            fillOpacity={0.04}
           >
             <div className="download-cta-group">
               {selectedDownload?.available && selectedDownload.url ? (

@@ -1,3 +1,5 @@
+import { BrandLogo } from './BrandLogo';
+
 const TELEGRAM_URL = 'https://t.me/+T9yAuOWOJiMwMGMx';
 const EMAIL = 'mailto:hola@playworship.app';
 
@@ -7,7 +9,7 @@ export function Footer() {
       <div className="footer-inner">
         <div className="footer-brand-col">
           <a className="footer-brand" href="#top" aria-label="Play Worship, volver al inicio">
-            <img src="/assets/img/pwLogoSinFondo.png" alt="Play Worship" width="1920" height="709" />
+            <BrandLogo />
           </a>
           <p className="footer-tag">
             Reproductor multitrack profesional para equipos de alabanza. Construido en comunidad.
@@ -61,7 +63,7 @@ export function Footer() {
           </div>
           <div className="footer-col">
             <h4>Recursos</h4>
-            <a href="#best-practices">Guía rápida</a>
+            <a href="https://help.playworship.app">Centro de ayuda</a>
             <a href="https://api.playworship.app/account">Cuenta y facturación</a>
             <a href={EMAIL}>Reportar un error</a>
             <a href={EMAIL}>Pedir función</a>

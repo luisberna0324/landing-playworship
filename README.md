@@ -60,6 +60,12 @@ landing-playworship/
                                # respeta prefers-reduced-motion)
 ```
 
+## Estilo y centro de ayuda
+
+La identidad visual usa el blanco como fondo principal, acentos verdes, texto oscuro y tipografía Syne. El hero y el footer conservan la forma del logo original mediante `BrandLogo`; los controles y las sombras usan la misma paleta en móvil y escritorio.
+
+El [centro de ayuda](https://help.playworship.app) se mantiene de forma independiente en [playworship-help](https://github.com/luisberna0324/playworship-help), con sus propios temas claro, oscuro y sistema, guías y configuración de Firebase Hosting. No requiere compilar ni desplegar esta página principal.
+
 ## Comandos
 
 ```bash

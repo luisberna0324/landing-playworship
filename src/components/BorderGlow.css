@@ -12,13 +12,13 @@
   isolation: isolate;
   transform: translate3d(0, 0, 0.01px);
   overflow: visible;
-  border: 1px solid rgb(255 255 255 / 15%);
+  border: 1px solid var(--accent-border);
   border-radius: var(--border-radius);
   background: var(--card-bg, #101612);
   box-shadow:
-    rgb(0 0 0 / 10%) 0 2px 4px,
-    rgb(0 0 0 / 14%) 0 8px 20px,
-    rgb(0 0 0 / 18%) 0 18px 40px;
+    rgb(27 37 32 / 4%) 0 2px 4px,
+    rgb(27 37 32 / 6%) 0 8px 20px,
+    rgb(27 37 32 / 8%) 0 18px 40px;
 }
 
 .border-glow-card::before,
