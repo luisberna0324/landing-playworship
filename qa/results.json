@@ -1,4 +1,8 @@
 {
+  "configuration": {
+    "url": "https://preview.invalid/?sandbox=1",
+    "snapshot": true
+  },
   "type": "DOM and file checks; not rendered browser QA",
   "source": "a31750867309c10a0a68c1c6e6f78c1dd4bfad2f",
   "checks": [
@@ -23,7 +27,7 @@
       "result": "pass"
     },
     {
-      "name": "Fallback status labels version uncertainty",
+      "name": "Preview snapshot supplies verified version and installer links",
       "result": "pass"
     },
     {

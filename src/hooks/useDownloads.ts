@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const MANIFEST_URL = import.meta.env.DEV
+const MANIFEST_URL = import.meta.env.VITE_REVIEW_PREVIEW === 'true'
+  ? '/review-downloads.json'
+  : import.meta.env.DEV
   ? '/api/downloads/latest.json'
   : 'https://storage.googleapis.com/adoracion-studio-installers-20260516-28602/installers/latest.json';
 

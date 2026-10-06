@@ -1,6 +1,6 @@
 # PlayWorship — propuesta de landing
 
-Vista previa local del rediseño inspirado en la claridad y el espacio de VMPal. No se publicó ni se modificó la web activa.
+Propuesta de rediseño inspirada en la claridad y el espacio de VMPal. La versión de revisión se prepara en un canal temporal de Firebase Hosting, separado del canal live. La web de producción permanece sin cambios.
 
 ## Qué incluye
 - Hero con el logo original, mensaje breve y captura real de la demo «Luz de esperanza»
@@ -17,7 +17,7 @@ Para trabajar sobre el código:
 
     npm ci
     npm run dev -- --host 127.0.0.1
-    npm run build
+    npm run build:preview
 
 Para repetir los controles DOM (no necesitan un navegador):
 
@@ -34,6 +34,8 @@ La carpeta `dist` contiene el build estático de producción. El parche `PlayWor
 - Capturas reales: waveform, zoom, minimapa y mezclador
 - Se retiró la secuencia de pantallazos de la propuesta. No se presenta como video final; falta integrar una grabación continua verificada
 - Las capturas no acreditan reproducción de audio: en el entorno cloud el contador permaneció en 00:00 durante esa prueba
+
+El build de revisión usa un snapshot validado del manifiesto oficial de descargas en su propio dominio para evitar cambiar CORS del bucket. No incluye checkout ni conexión con Cloud Run.
 
 Pendiente: inspección visual en escritorio y móvil, navegación real con teclado/touch y verificación de transferencias de descarga. El navegador disponible rechazó la dirección local con `net::ERR_BLOCKED_BY_CLIENT`; no se eludió la restricción. Los controles DOM no sustituyen esas pruebas de navegador.
 
