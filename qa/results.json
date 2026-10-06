@@ -1,0 +1,80 @@
+{
+  "type": "DOM and file checks; not rendered browser QA",
+  "source": "a31750867309c10a0a68c1c6e6f78c1dd4bfad2f",
+  "checks": [
+    {
+      "name": "One descriptive H1 and main landmark",
+      "result": "pass"
+    },
+    {
+      "name": "Every internal anchor has a target",
+      "result": "pass"
+    },
+    {
+      "name": "All displayed images have alt text and existing local assets",
+      "result": "pass"
+    },
+    {
+      "name": "Demo uses honest static capture while continuous recording is pending",
+      "result": "pass"
+    },
+    {
+      "name": "Production Cloud CTAs retain consult behavior",
+      "result": "pass"
+    },
+    {
+      "name": "Fallback status labels version uncertainty",
+      "result": "pass"
+    },
+    {
+      "name": "Mobile menu starts hidden",
+      "result": "pass"
+    },
+    {
+      "name": "Mobile menu opens with synchronized ARIA",
+      "result": "pass"
+    },
+    {
+      "name": "Escape closes menu and restores focus",
+      "result": "pass"
+    },
+    {
+      "name": "Menu navigation dismisses menu",
+      "result": "pass"
+    },
+    {
+      "name": "Annual prices and pressed states update",
+      "result": "pass"
+    },
+    {
+      "name": "Monthly toggle restores original prices",
+      "result": "pass"
+    },
+    {
+      "name": "Footer has all four platform labels",
+      "result": "pass"
+    },
+    {
+      "name": "FAQ uses native keyboard-accessible details",
+      "result": "pass"
+    },
+    {
+      "name": "Local price and legal pages are included",
+      "result": "pass"
+    },
+    {
+      "name": "External new-tab links include opener protection",
+      "result": "pass"
+    }
+  ],
+  "notRun": [
+    "Desktop and mobile rendered layout",
+    "Browser keyboard and touch interactions",
+    "Real download transfers",
+    "Checkout/backend purchase flow"
+  ],
+  "knownLimits": [
+    "Cloud browser returned net::ERR_BLOCKED_BY_CLIENT for local preview",
+    "Fallback Android APK omitted from portable preview; remains in original repository"
+  ]
+}

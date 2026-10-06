@@ -9,7 +9,7 @@ const ITEMS: FaqItem[] = [
     answer: (
       <p>
         Puedes descargarla para <strong>Windows 10 y 11</strong> y <strong>macOS</strong>.
-        También hay una versión para Android; iOS está en preparación. Consulta el menú de
+        También hay una versión para Android e iOS está en beta mediante TestFlight. Consulta la sección de
         descargas para ver la disponibilidad de cada plataforma.
       </p>
     )
@@ -58,7 +58,7 @@ const ITEMS: FaqItem[] = [
     question: '¿Cómo instalo Play Worship?',
     answer: (
       <p>
-        Abre las opciones de descarga y elige tu plataforma. En Windows, descarga el instalador{' '}
+        Visita la sección de descargas y elige tu plataforma. En Windows, descarga el instalador{' '}
         <code>.exe</code> y sigue las instrucciones.
       </p>
     )

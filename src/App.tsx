@@ -1,36 +1,31 @@
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { Cinemagraph } from './components/Cinemagraph';
-import { MobileApp } from './components/MobileApp';
-import { TaskModule } from './components/TaskModule';
-import { BestPractices } from './components/BestPractices';
+import { ProductOverview } from './components/ProductOverview';
+import { Downloads } from './components/Downloads';
 import { Pricing } from './components/Pricing';
 import { Faq } from './components/Faq';
-import { CtaFinal } from './components/CtaFinal';
 import { Footer } from './components/Footer';
 import { BillingProvider } from './context/BillingContext';
-import { useReveal } from './hooks/useReveal';
 
 export default function App() {
-  useReveal('.reveal');
-
-  return (
-    <BillingProvider>
-      <a className="skip-link" href="#main">
-        Saltar al contenido
-      </a>
-      <Header />
-      <main id="main">
-        <Hero />
-        <Cinemagraph />
-        <MobileApp />
-        <TaskModule />
-        <BestPractices />
-        <Pricing />
-        <Faq />
-        <CtaFinal />
-      </main>
-      <Footer />
-    </BillingProvider>
-  );
+  return <BillingProvider>
+    <a className="skip-link" href="#main">Saltar al contenido</a>
+    <Header />
+    <main id="main">
+      <Hero />
+      <ProductOverview />
+      <Downloads />
+      <Pricing />
+      <Faq />
+      <section className="closing" aria-labelledby="closing-title">
+        <div className="container">
+          <p className="eyebrow">HECHO PARA TU EQUIPO DE ALABANZA</p>
+          <h2 id="closing-title">Prepara tu música.<br />Vive cada momento.</h2>
+          <a className="btn-primary" href="#descargas">Empezar gratis <span aria-hidden="true">↗</span></a>
+          <p>¿Tienes preguntas? <a href="https://t.me/+T9yAuOWOJiMwMGMx" target="_blank" rel="noopener noreferrer">Conversemos en Telegram ↗</a></p>
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </BillingProvider>;
 }

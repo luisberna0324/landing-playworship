@@ -1,109 +1,45 @@
-import { useEffect, useState } from 'react';
-import { useScrolled } from '../hooks/useScrolled';
+import { useEffect, useRef, useState } from 'react';
+import { BrandLogo } from './BrandLogo';
 
 const NAV_LINKS = [
-  { href: '#features-tabs', label: 'Producto' },
-  { href: '#best-practices', label: 'Funciones' },
-  { href: '#mobile-app', label: 'Mobile' },
-  { href: '#precios', label: 'Precios' },
-  { href: '#faq', label: 'FAQ' },
-  { href: 'https://t.me/+T9yAuOWOJiMwMGMx', label: 'Comunidad', external: true }
+  { href: '#producto', label: 'Producto' },
+  { href: '#precios', label: 'Local + Cloud' },
+  { href: 'https://help.playworship.app', label: 'Ayuda' },
 ];
 
-const TELEGRAM_URL = 'https://t.me/+T9yAuOWOJiMwMGMx';
-
 export function Header() {
-  const scrolled = useScrolled(8);
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const toggleRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    document.body.classList.toggle('nav-open', menuOpen);
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setMenuOpen(false);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && menuOpen) {
+        setMenuOpen(false);
+        toggleRef.current?.focus();
+      }
     };
-    document.addEventListener('keydown', onKeyDown);
+    const mq = window.matchMedia('(min-width: 760px)');
+    const onResize = () => { if (mq.matches) setMenuOpen(false); };
+    document.addEventListener('keydown', onKey);
+    mq.addEventListener('change', onResize);
     return () => {
-      document.body.classList.remove('nav-open');
-      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('keydown', onKey);
+      mq.removeEventListener('change', onResize);
     };
   }, [menuOpen]);
-
-  // Cerrar el menú si pasa a desktop
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 960px)');
-    const onChange = (e: MediaQueryListEvent) => {
-      if (e.matches) setMenuOpen(false);
-    };
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
-
-  return (
-    <header className={`site-header${scrolled ? ' is-scrolled' : ''}`} id="site-header">
-      <div className="header-row">
-        <a className="header-brand" href="#top" aria-label="Play Worship, ir al inicio">
-          <span className="header-logo">
-            <img src="/assets/img/icono-pw.png" alt="" />
-          </span>
-        </a>
-        <nav className="header-nav" aria-label="Navegación principal">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-        <a className="header-cta" href={TELEGRAM_URL} target="_blank" rel="noopener">
-          Unirme al grupo
-        </a>
-        <button
-          className="header-menu-toggle"
-          type="button"
-          aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
-          aria-controls="mobile-menu"
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((v) => !v)}
-        >
-          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <path
-              d={menuOpen ? 'M5 5l14 14M19 5 5 19' : 'M3 6h18M3 12h18M3 18h18'}
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-              fill="none"
-            />
-          </svg>
-        </button>
-      </div>
-      <div
-        className={`mobile-menu${menuOpen ? ' is-open' : ''}`}
-        id="mobile-menu"
-        {...(menuOpen ? {} : { hidden: true })}
-      >
-        {NAV_LINKS.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
-            onClick={() => setMenuOpen(false)}
-          >
-            {link.label}
-          </a>
-        ))}
-        <a
-          className="mobile-cta"
-          href={TELEGRAM_URL}
-          target="_blank"
-          rel="noopener"
-          onClick={() => setMenuOpen(false)}
-        >
-          Unirme al grupo
-        </a>
-      </div>
-    </header>
-  );
+  return <header className="site-header">
+    <div className="header-row container">
+      <a className="header-brand" href="#top" aria-label="Play Worship, inicio"><BrandLogo priority /></a>
+      <nav className="header-nav" aria-label="Navegación principal">
+        {NAV_LINKS.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}
+      </nav>
+      <a className="header-cta" href="#descargas">Descargar <span aria-hidden="true">↓</span></a>
+      <button ref={toggleRef} className="header-menu-toggle" aria-controls="mobile-menu" aria-expanded={menuOpen} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} onClick={() => setMenuOpen(!menuOpen)}>
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d={menuOpen ? 'M5 5l14 14M19 5 5 19' : 'M4 7h16M4 12h16M4 17h16'} stroke="currentColor" strokeWidth="1.5" fill="none" /></svg>
+      </button>
+    </div>
+    <nav id="mobile-menu" className="mobile-menu" aria-label="Navegación móvil" hidden={!menuOpen}>
+      {NAV_LINKS.map(link => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}</a>)}
+      <a href="#descargas" onClick={() => setMenuOpen(false)}>Descargar gratis</a>
+    </nav>
+  </header>;
 }

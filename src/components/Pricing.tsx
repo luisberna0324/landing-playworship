@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useBilling, type Billing } from '../context/BillingContext';
 
 const TELEGRAM_URL = 'https://t.me/+T9yAuOWOJiMwMGMx';
-const LIVE_CHECKOUT_ENABLED = import.meta.env.VITE_CLOUD_CHECKOUT_ENABLED === 'true';
-const SANDBOX_PREVIEW = !LIVE_CHECKOUT_ENABLED &&
+const REVIEW_PREVIEW = import.meta.env.VITE_REVIEW_PREVIEW === 'true';
+const LIVE_CHECKOUT_ENABLED = !REVIEW_PREVIEW && import.meta.env.VITE_CLOUD_CHECKOUT_ENABLED === 'true';
+const SANDBOX_PREVIEW = !REVIEW_PREVIEW && !LIVE_CHECKOUT_ENABLED &&
   new URLSearchParams(window.location.search).get('sandbox') === '1';
-const CHECKOUT_ENABLED = import.meta.env.DEV || SANDBOX_PREVIEW || LIVE_CHECKOUT_ENABLED;
+const CHECKOUT_ENABLED = !REVIEW_PREVIEW && (import.meta.env.DEV || SANDBOX_PREVIEW || LIVE_CHECKOUT_ENABLED);
 
 interface PaddleCheckout {
   Checkout: {
@@ -110,7 +111,7 @@ function PlanPrice({ plan, billing }: { plan: Plan; billing: Billing }) {
 
 function PlanCta({ plan, busy, onCheckout }: { plan: Plan; busy: boolean; onCheckout: (plan: Plan) => void }) {
   if (!plan.cloudPlan) {
-    return <a className="plan-btn plan-btn-main" href="#top">Descargar gratis</a>;
+    return <a className="plan-btn plan-btn-main" href="#descargas">Descargar gratis</a>;
   }
 
   if (!CHECKOUT_ENABLED) {

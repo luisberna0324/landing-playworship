@@ -1,0 +1,37 @@
+{
+  "hosting": {
+    "site": "play-worship",
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "assets/captures/waveform-zoom-minimap.mp4",
+      "assets/captures/waveform-poster.webp"
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/downloads/playworship-android-beta.apk",
+        "destination": "https://playworship.app/downloads/playworship-android-beta.apk",
+        "type": 302
+      }
+    ]
+  }
+}
