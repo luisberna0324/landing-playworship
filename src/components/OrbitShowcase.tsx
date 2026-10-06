@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { PlatformIcon } from './PlatformIcon';
 
 function Starfield({ paused }: { paused: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -42,11 +43,11 @@ export function OrbitShowcase() {
   return <section className={`orbit-section${paused ? ' is-paused' : ''}`} aria-labelledby="orbit-title">
     <Starfield paused={paused} />
     <div className="container">
-      <div className="section-intro reveal"><p className="eyebrow">PLAYWORSHIP CONTIGO</p><h2 id="orbit-title">Tu música.<br /><span>En tu equipo.</span></h2><p>Windows, macOS y Android.<br />También iOS, en beta mediante TestFlight.</p></div>
+      <div className="section-intro reveal"><p className="eyebrow">PLAYWORSHIP CONTIGO</p><h2 id="orbit-title">Tu música.<br /><span>En tu equipo.</span></h2><p>Windows, macOS y Android.<br />Beta para iOS y Mac mediante TestFlight.</p></div>
       <div className="orbit-system" aria-hidden="true" data-motion={paused ? 'paused' : 'running'}>
-        <div className="orbit-track orbit-track-one"><div className="orbit-spin"><span className="orbit-node"><span className="orbit-counter"><img src="/assets/icons/apple.svg" alt="" /></span></span></div></div>
-        <div className="orbit-track orbit-track-two"><div className="orbit-spin"><span className="orbit-node"><span className="orbit-counter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 3h9v8H2zm11 0h9v8h-9zM2 13h9v8H2zm11 0h9v8h-9z" /></svg></span></span></div></div>
-        <div className="orbit-track orbit-track-three"><div className="orbit-spin"><span className="orbit-node"><span className="orbit-counter"><img src="/assets/icons/android.svg" alt="" /></span></span></div></div>
+        <div className="orbit-track orbit-track-one"><div className="orbit-spin"><span className="orbit-node"><span className="orbit-counter"><PlatformIcon platform="apple" /></span></span></div></div>
+        <div className="orbit-track orbit-track-two"><div className="orbit-spin"><span className="orbit-node"><span className="orbit-counter"><PlatformIcon platform="windows" /></span></span></div></div>
+        <div className="orbit-track orbit-track-three"><div className="orbit-spin"><span className="orbit-node"><span className="orbit-counter"><PlatformIcon platform="android" /></span></span></div></div>
         <div className="orbit-core"><img src="/assets/img/icono-pw1.png" width="128" height="128" alt="" /></div>
       </div>
       <div className="orbit-controls"><a className="text-link" href="#descargas">Elige tu plataforma</a><button type="button" className="motion-toggle" aria-pressed={paused} onClick={() => setPaused(v => !v)}>{paused ? 'Reanudar animación' : 'Pausar animación'}</button></div>

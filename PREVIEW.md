@@ -36,6 +36,12 @@ Los controles Paddle usan un SDK simulado local, sin contactar al proveedor ni c
 
 ## Estado y límites
 
-La revisión previa se publicó sólo en el canal temporal `landing-review-20261006`, que vence el 13 de octubre de 2026 a las 22:55 UTC. Esta segunda revisión de movimiento y Paddle se prepara localmente y necesita confirmación de publicación antes de sustituir la versión anterior.
+La revisión previa se publicó sólo en el canal temporal `landing-review-20261006`, que vence el 13 de octubre de 2026 a las 22:55 UTC. La revisión de movimiento y Paddle se publicó con autorización en este mismo canal. Se verificaron visualmente el despliegue de ventanas, las órbitas, la pausa y el overlay real marcado Test Mode; no se completó ninguna compra. La siguiente iteración añade el enlace TestFlight proporcionado por el usuario y un tratamiento SVG coherente de plataformas.
 
 Repositorio: `luisberna0324/landing-playworship`. Base original: `a31750867309c10a0a68c1c6e6f78c1dd4bfad2f`. Rama de revisión: `preview/vmpal-review-20261006`. No fusionar ni ejecutar `npm run deploy` para esta revisión.
+
+## TestFlight, precios y caché de revisión
+- Invitación proporcionada por el usuario: https://testflight.apple.com/join/TsUWWH1r. El título público de Apple identifica PlayWorship; no se verificaron builds compatibles ni cupos ni se aceptó la invitación
+- Mac conserva un instalador estable independiente de su acceso a beta. iOS y Mac enlazan a la misma invitación; TestFlight determina compatibilidad y disponibilidad
+- Solo en el build de revisión, el texto deja de calificar los importes como base: el total y los impuestos se consultan en Paddle. Las cifras y la configuración comercial no cambian; un importe de Sandbox no verifica precios live
+- El canal de revisión emite no-store y sus marcos de QA incluyen el fingerprint del build. La caché de producción no se cambia

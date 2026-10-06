@@ -31,6 +31,18 @@
       "result": "pass"
     },
     {
+      "name": "Stable Mac and exact supplied Apple beta links remain distinct",
+      "result": "pass"
+    },
+    {
+      "name": "Review tax wording agrees across landing and price page",
+      "result": "pass"
+    },
+    {
+      "name": "Preview cache and QA frame fingerprints prevent stale review",
+      "result": "pass"
+    },
+    {
       "name": "Mobile menu starts hidden",
       "result": "pass"
     },

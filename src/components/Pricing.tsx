@@ -220,7 +220,7 @@ export function Pricing() {
             </div>
           ))}
         </div>
-        <p className="pricing-note">Los planes Cloud son opcionales. Precios base en USD; Paddle calcula los impuestos aplicables antes de confirmar el pago. <a href="/precios.html">Ver todos los precios y condiciones</a>.</p>
+        <p className="pricing-note">{REVIEW_PREVIEW ? 'Los planes Cloud son opcionales. Importes en USD. Revisa el total y los impuestos aplicables en Paddle antes de confirmar.' : 'Los planes Cloud son opcionales. Precios base en USD; Paddle calcula los impuestos aplicables antes de confirmar el pago.'} <a href="/precios.html">Ver todos los precios y condiciones</a>.</p>
         {error && <p className="pricing-checkout-error" role="alert">{error}</p>}
         {(SANDBOX_PREVIEW || sandboxNotice) && (
           <p className="pricing-checkout-warning" role="status">
