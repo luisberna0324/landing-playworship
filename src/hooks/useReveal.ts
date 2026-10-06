@@ -10,6 +10,9 @@ export function useReveal(selector = '.reveal', threshold = 0.08) {
   useEffect(() => {
     const elements = document.querySelectorAll<HTMLElement>(selector);
     if (!elements.length) return;
+    document.documentElement.classList.add('motion-ready');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduced.matches) { elements.forEach(el => el.classList.add('is-visible')); return; }
 
     if (!('IntersectionObserver' in window)) {
       elements.forEach((el) => el.classList.add('is-visible'));
@@ -29,6 +32,6 @@ export function useReveal(selector = '.reveal', threshold = 0.08) {
     );
 
     elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    return () => { observer.disconnect(); document.documentElement.classList.remove('motion-ready'); };
   }, [selector, threshold]);
 }

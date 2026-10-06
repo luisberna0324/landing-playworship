@@ -10,6 +10,7 @@ const checks=[];
 function test(name,fn){fn();checks.push({name,result:'pass'});}
 const dom=new JSDOM('<!doctype html><html lang="es"><head></head><body><div id="root"></div></body></html>',{url:process.env.PLAYWORSHIP_QA_URL || 'https://preview.invalid',runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window;
+w.HTMLCanvasElement.prototype.getContext=()=>null;
 w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
 w.fetch=async(url)=>{
  if (process.env.PLAYWORSHIP_QA_USE_MANIFEST) {
@@ -32,7 +33,7 @@ const delay=()=>new Promise(r=>setTimeout(r,30));
  test('Every internal anchor has a target',()=>{for(const a of d.querySelectorAll('a[href^="#"]')) assert.ok(d.getElementById(a.getAttribute('href').slice(1)),a.outerHTML);});
  test('All displayed images have alt text and existing local assets',()=>{for(const im of d.querySelectorAll('img')){assert.ok(im.hasAttribute('alt'));assert.ok(fs.existsSync(path.join(root,'public',im.getAttribute('src'))),im.src);}});
  test('Demo uses honest static capture while continuous recording is pending',()=>{assert.equal(d.querySelectorAll('video').length,0);assert.ok(d.querySelector('.demo-figure img'));assert.match(d.querySelector('.demo-figure figcaption').textContent,/Captura real/);});
- test('Production Cloud CTAs retain consult behavior',()=>{assert.equal(d.querySelectorAll('.plan-card').length,3);assert.equal([...d.querySelectorAll('.plan-btn')].filter(a=>a.textContent.includes('Consultar por Cloud')).length,2);});
+ test('Review preserves explicit Paddle Sandbox controls',()=>{assert.equal(d.querySelectorAll('.plan-card').length,3);assert.equal([...d.querySelectorAll('button.plan-btn')].filter(a=>a.textContent.includes('Sandbox')).length,2);assert.match(d.querySelector('.sandbox-label').textContent,/Sin cargos reales/);});
  if (process.env.PLAYWORSHIP_QA_USE_MANIFEST) {
   test('Preview snapshot supplies verified version and installer links',()=>{const m=JSON.parse(fs.readFileSync(path.join(root,'dist/review-downloads.json'),'utf8'));assert.equal(d.querySelector('.download-note[role="status"]')===null,true);assert.equal([...d.querySelectorAll('.download-card small')].filter(x=>x.textContent===`Versión ${m.version}`).length,3);assert.equal(d.querySelectorAll('a[href*="testflight.apple.com"]').length,0);});
  } else {

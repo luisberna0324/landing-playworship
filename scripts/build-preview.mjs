@@ -1,6 +1,6 @@
 // Produces only a static review build. Does not deploy or change production settings.
 import { spawnSync } from 'node:child_process';
-import { writeFile } from 'node:fs/promises';
+import { writeFile, copyFile } from 'node:fs/promises';
 const built = spawnSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'build'], {
   stdio: 'inherit', env: { ...process.env, VITE_REVIEW_PREVIEW: 'true' },
 });
@@ -18,3 +18,5 @@ for (const platform of ['macos', 'windows', 'android']) {
 if (manifest.platforms.ios?.available !== false) throw new Error('iOS availability needs review');
 await writeFile('dist/review-downloads.json', JSON.stringify(manifest, null, 2) + '\n');
 console.log(`Review download snapshot: v${manifest.version}. Production still reads the live manifest.`);
+
+await copyFile('qa/review-frame.html', 'dist/review-qa.html');

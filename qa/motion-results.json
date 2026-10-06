@@ -1,0 +1,29 @@
+{
+  "type": "Local motion behavior checks, not rendered animation evidence",
+  "tests": [
+    {
+      "name": "Scroll fan starts stacked at progress0",
+      "result": "pass"
+    },
+    {
+      "name": "Scroll fan reaches open progress1 at the end of its range",
+      "result": "pass"
+    },
+    {
+      "name": "Three real-image layers and three orbit tracks present",
+      "result": "pass"
+    },
+    {
+      "name": "Motion pause updates state and accessible button",
+      "result": "pass"
+    },
+    {
+      "name": "Motion can resume",
+      "result": "pass"
+    },
+    {
+      "name": "Reduced-motion preference shows the fan fully open without scroll movement",
+      "result": "pass"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "type": "Local stubbed integration tests, not a real payment or webhook test",
+  "tests": [
+    {
+      "name": "Billing selection stays locked while checkout is pending",
+      "result": "pass"
+    },
+    {
+      "name": "Repeated clicks produce one configuration request and one overlay",
+      "result": "pass"
+    },
+    {
+      "name": "Existing SDK initializes in Sandbox",
+      "result": "pass"
+    },
+    {
+      "name": "Cloud300 monthly and existing integration metadata preserved",
+      "result": "pass"
+    },
+    {
+      "name": "Cloud500 annual selection reaches the original overlay flow",
+      "result": "pass"
+    },
+    {
+      "name": "Repeated opening reuses the initialized SDK",
+      "result": "pass"
+    },
+    {
+      "name": "Live config fails closed in the review build",
+      "result": "pass"
+    }
+  ]
+}

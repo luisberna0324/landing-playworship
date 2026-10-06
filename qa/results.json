@@ -1,6 +1,6 @@
 {
   "configuration": {
-    "url": "https://preview.invalid/?sandbox=1",
+    "url": "https://preview.invalid",
     "snapshot": true
   },
   "type": "DOM and file checks; not rendered browser QA",
@@ -23,7 +23,7 @@
       "result": "pass"
     },
     {
-      "name": "Production Cloud CTAs retain consult behavior",
+      "name": "Review preserves explicit Paddle Sandbox controls",
       "result": "pass"
     },
     {

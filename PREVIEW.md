@@ -1,47 +1,41 @@
-# PlayWorship — propuesta de landing
+# PlayWorship · revisión de landing
 
-Propuesta de rediseño inspirada en la claridad y el espacio de VMPal. La versión de revisión se prepara en un canal temporal de Firebase Hosting, separado del canal live. La web de producción permanece sin cambios.
+Revisión inspirada en los efectos observados directamente en VMPal. Usa el logo y las capturas de PlayWorship. El canal live y la configuración de producción se conservan.
 
-## Qué incluye
-- Hero con el logo original, mensaje breve y captura real de la demo «Luz de esperanza»
-- Tres beneficios: setlists, secciones y mezclador
-- Vista estática real del waveform y minimapa; video continuo pendiente
-- Descargas por plataforma; iOS aparece como beta en TestFlight, sin inventar un enlace de invitación
-- Planes Local/Cloud, precios y comportamiento de consulta existentes conservados
-- Menú móvil con Escape y devolución de foco, imágenes con texto alternativo y preferencia de movimiento reducido
+## Revisión de movimiento
+- Tres ventanas reales se abren con el scroll: capas a escala .84/.92/1 y separación progresiva 24%/12%/0
+- Apariciones con 28 px de recorrido; opacidad .9 s y desplazamiento 1 s
+- Tres órbitas de 46/70/96 s, con contrarrotación para mantener derechos los iconos
+- Fondo de puntos sutiles, header que pasa a desenfoque al desplazarse y transiciones hover
+- Control para pausar las órbitas y el fondo; preferencia de movimiento reducido respetada
+- Se mantienen imágenes reales estáticas. No se presenta una secuencia de pantallazos como video continuo
 
-## Abrir
-La entrega `PlayWorship-vista-previa.html` es un archivo autónomo: descarga y abre ese archivo en un navegador. Imágenes y estilos están incluidos. Los enlaces externos necesitan internet. No es una URL pública.
+## Paddle conservado
+- Se mantienen el componente de precios, BillingProvider, selección mensual/anual, cargador Paddle.js, metadatos y checkout overlay originales
+- En `build:preview`, las acciones están claramente marcadas como Paddle Sandbox; rechazan configuración o token live
+- Se restituye únicamente la ruta original `/api/paddle/config` al servicio existente. No se despliega ni modifica el backend
+- El endpoint Sandbox existente fue verificado: respuesta 200, entorno Sandbox, checkout y aprovisionamiento listos, token público de cliente de prueba y los cuatro price IDs presentes
+- El endpoint de producción devuelve 503 en la comprobación actual; no se habilita checkout live en la revisión
+- No se realizaron compras, se ingresaron datos de pago ni se probaron webhooks
 
-Para trabajar sobre el código:
+## Ejecutar
 
     npm ci
-    npm run dev -- --host 127.0.0.1
     npm run build:preview
 
-Para repetir los controles DOM (no necesitan un navegador):
+La revisión toma una copia validada del manifiesto oficial de descargas en `dist/review-downloads.json`. Evita cambiar CORS del bucket; el comportamiento de producción sigue leyendo el manifiesto en vivo.
+
+Controles locales (no sustituyen renderizado en navegador):
 
     npm install --no-save --package-lock=false jsdom
     node qa/check-preview.cjs
-    python3 qa/package-preview.py
-    node qa/check-standalone.cjs
+    node qa/check-paddle.cjs
+    node qa/check-motion.cjs
 
-La carpeta `dist` contiene el build estático de producción. El parche `PlayWorship-redesign.patch` se puede revisar y aplicar sobre el repo original en el commit de referencia.
+Los controles Paddle usan un SDK simulado local, sin contactar al proveedor ni crear pagos. La URL de revisión debe verificarse después de su actualización para confirmar el overlay real, animaciones, móvil y navegación.
 
-## Verificación
-- Compilación TypeScript y build de Vite: correctos
-- 16 controles DOM/archivos: correctos (ver `qa/results.json`)
-- Capturas reales: waveform, zoom, minimapa y mezclador
-- Se retiró la secuencia de pantallazos de la propuesta. No se presenta como video final; falta integrar una grabación continua verificada
-- Las capturas no acreditan reproducción de audio: en el entorno cloud el contador permaneció en 00:00 durante esa prueba
+## Estado y límites
 
-El build de revisión usa un snapshot validado del manifiesto oficial de descargas en su propio dominio para evitar cambiar CORS del bucket. No incluye checkout ni conexión con Cloud Run.
+La revisión previa se publicó sólo en el canal temporal `landing-review-20261006`, que vence el 13 de octubre de 2026 a las 22:55 UTC. Esta segunda revisión de movimiento y Paddle se prepara localmente y necesita confirmación de publicación antes de sustituir la versión anterior.
 
-Pendiente: inspección visual en escritorio y móvil, navegación real con teclado/touch y verificación de transferencias de descarga. El navegador disponible rechazó la dirección local con `net::ERR_BLOCKED_BY_CLIENT`; no se eludió la restricción. Los controles DOM no sustituyen esas pruebas de navegador.
-
-## Origen y límites de esta copia
-Snapshot de `luisberna0324/landing-playworship`, main `a31750867309c10a0a68c1c6e6f78c1dd4bfad2f`, 6 de octubre de 2026. Rama local: `preview/vmpal-inspired-20261006`. Es una copia preparada desde el contenido del repositorio, sin su historial Git remoto.
-
-Se incluyeron los assets utilizados por este diseño. Los videos/GIF antiguos no utilizados y la APK Android de 38 MB no se copiaron al paquete. El repo original conserva esos archivos. El manifiesto de descargas sigue siendo la fuente de disponibilidad; el HTML autónomo enlaza los recursos legales y la APK alternativa al dominio existente.
-
-Antes de publicar: revisar el diseño renderizado, comprobar disponibilidad y enlaces actuales, confirmar el acceso público a TestFlight si se desea un botón directo y ejecutar las pruebas visuales pendientes. No ejecutar `npm run deploy` sin autorización.
+Repositorio: `luisberna0324/landing-playworship`. Base original: `a31750867309c10a0a68c1c6e6f78c1dd4bfad2f`. Rama de revisión: `preview/vmpal-review-20261006`. No fusionar ni ejecutar `npm run deploy` para esta revisión.

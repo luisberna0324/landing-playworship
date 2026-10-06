@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useBilling, type Billing } from '../context/BillingContext';
 
 const TELEGRAM_URL = 'https://t.me/+T9yAuOWOJiMwMGMx';
 const REVIEW_PREVIEW = import.meta.env.VITE_REVIEW_PREVIEW === 'true';
 const LIVE_CHECKOUT_ENABLED = !REVIEW_PREVIEW && import.meta.env.VITE_CLOUD_CHECKOUT_ENABLED === 'true';
-const SANDBOX_PREVIEW = !REVIEW_PREVIEW && !LIVE_CHECKOUT_ENABLED &&
-  new URLSearchParams(window.location.search).get('sandbox') === '1';
-const CHECKOUT_ENABLED = !REVIEW_PREVIEW && (import.meta.env.DEV || SANDBOX_PREVIEW || LIVE_CHECKOUT_ENABLED);
+const SANDBOX_PREVIEW = REVIEW_PREVIEW || (!LIVE_CHECKOUT_ENABLED &&
+  new URLSearchParams(window.location.search).get('sandbox') === '1');
+const CHECKOUT_ENABLED = import.meta.env.DEV || SANDBOX_PREVIEW || LIVE_CHECKOUT_ENABLED;
 
 interface PaddleCheckout {
   Checkout: {
@@ -129,12 +129,14 @@ function PlanCta({ plan, busy, onCheckout }: { plan: Plan; busy: boolean; onChec
 
 export function Pricing() {
   const { billing, setBilling } = useBilling();
+  const checkoutLock = useRef(false);
   const [busyPlan, setBusyPlan] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [sandboxNotice, setSandboxNotice] = useState(false);
 
   async function startCheckout(plan: Plan) {
-    if (!plan.cloudPlan || busyPlan) return;
+    if (!plan.cloudPlan || checkoutLock.current) return;
+    checkoutLock.current = true;
     setBusyPlan(plan.cloudPlan);
     setError(null);
     try {
@@ -151,7 +153,7 @@ export function Pricing() {
       if (!configResponse.ok || !config.checkoutReady || !config.token || !config.environment || !priceId) {
         throw new Error('El checkout no está disponible en este momento. Inténtalo más tarde.');
       }
-      if (SANDBOX_PREVIEW && config.environment !== 'sandbox') {
+      if (SANDBOX_PREVIEW && (config.environment !== 'sandbox' || !config.token.startsWith('test_'))) {
         throw new Error('La URL de prueba sólo acepta Paddle Sandbox.');
       }
       setSandboxNotice(config.environment === 'sandbox');
@@ -169,6 +171,7 @@ export function Pricing() {
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'No se pudo iniciar la compra.');
     } finally {
+      checkoutLock.current = false;
       setBusyPlan(null);
     }
   }
@@ -176,31 +179,34 @@ export function Pricing() {
   return (
     <section className="pricing" id="precios" aria-labelledby="pricing-title">
       <div className="container">
-        <div className="pricing-header">
+        <div className="pricing-header reveal">
           <h2 id="pricing-title" className="section-heading">PlayWorship es gratis. La nube es opcional.</h2>
           <p className="section-sub">
             Usa PlayWorship local sin costo y sin conexión. Paga solo si quieres guardar tu biblioteca
             en la nube y sincronizarla entre tus dispositivos.
           </p>
+          {SANDBOX_PREVIEW && <p className="sandbox-label">Paddle Sandbox · Sin cargos reales</p>}
           <div className="billing-switch" role="group" aria-label="Frecuencia de cobro">
             <button
               className={`billing-option${billing === 'monthly' ? ' is-active' : ''}`}
               type="button"
+              disabled={Boolean(busyPlan)}
               aria-pressed={billing === 'monthly'}
               onClick={() => setBilling('monthly')}
             >Mensual</button>
             <button
               className={`billing-option${billing === 'annual' ? ' is-active' : ''}`}
               type="button"
+              disabled={Boolean(busyPlan)}
               aria-pressed={billing === 'annual'}
               onClick={() => setBilling('annual')}
               aria-label="Anual, ahorro aproximado del 17%"
             >Anual · -17%</button>
           </div>
         </div>
-        <div className="pricing-grid">
+        <div className="pricing-grid" aria-busy={Boolean(busyPlan)}>
           {PLANS.map((plan) => (
-            <div key={plan.name} className={`plan-card${plan.featured ? ' featured' : ''}`}>
+            <div key={plan.name} className={`plan-card reveal${plan.featured ? ' featured' : ''}`}>
               {plan.badge ? <div className="plan-badge">{plan.badge}</div> : null}
               <div className="plan-name">{plan.name}</div>
               <PlanPrice plan={plan} billing={billing} />
@@ -218,8 +224,7 @@ export function Pricing() {
         {error && <p className="pricing-checkout-error" role="alert">{error}</p>}
         {(SANDBOX_PREVIEW || sandboxNotice) && (
           <p className="pricing-checkout-warning" role="status">
-            Modo Sandbox: no hay cargos reales. Sólo la cuenta de prueba autorizada recibirá Cloud;
-            introduce su correo durante el checkout de Paddle.
+            Modo Sandbox: no hay cargos reales. La activación de Cloud está limitada a la cuenta de prueba autorizada.
           </p>
         )}
       </div>
