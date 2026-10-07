@@ -22,23 +22,19 @@
       "result": "pass"
     },
     {
-      "name": "Fine pointer moves decorative light toward the pointer",
+      "name": "Fine pointer creates a local ASCII trail",
       "result": "pass"
     },
     {
-      "name": "Pause freezes pointer response and decorative animation state",
+      "name": "No decorative pause controls remain; native media controls remain",
       "result": "pass"
     },
     {
-      "name": "Resume restores pointer response",
+      "name": "Touch/coarse pointer disables the ASCII trail",
       "result": "pass"
     },
     {
-      "name": "Touch/coarse pointer never drives the background",
-      "result": "pass"
-    },
-    {
-      "name": "Reduced motion stops backdrop and opens the static fan",
+      "name": "Reduced motion stops the field and opens the static fan",
       "result": "pass"
     }
   ]

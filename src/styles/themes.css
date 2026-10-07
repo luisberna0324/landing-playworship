@@ -12,10 +12,6 @@
 :root[data-theme="light"] .eyebrow{color:#526e5b}
 :root[data-theme="light"] .hero h1 span,:root[data-theme="light"] .section-intro h2 span{color:#587361}
 :root[data-theme="light"] .hero-note,:root[data-theme="light"] .hero-note span{color:#576e60}
-:root[data-theme="light"] .interactive-backdrop{--ambient-green:42,143,79;--ambient-mint:39,148,107}
-:root[data-theme="light"] .ambient-grid{background-image:radial-gradient(#578b6840 .8px,transparent .9px)}
-:root[data-theme="light"] .ambient-glow{opacity:.8}
-:root[data-theme="light"] .hero-visual{background:radial-gradient(ellipse at 50% 0%,#c3e4cc 0%,#e0ede3 45%,#edf4ef 100%);border-color:#b3cdbb;box-shadow:0 24px 80px #244a3219}
 :root[data-theme="light"] .hero-visual figcaption{color:#456750}
 :root[data-theme="light"] .stack-window{box-shadow:0 24px 60px #244a3229;border-color:#9fb6a6}
 :root[data-theme="light"] .workflow-icon{background:linear-gradient(135deg,#e0f2e5,#f8fcf9);border-color:#bed5c5;color:#247340;box-shadow:inset 0 1px #fff}

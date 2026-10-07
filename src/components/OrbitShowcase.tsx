@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { DeviceIcon } from './DeviceIcon';
 import './OrbitDevices.css';
 
-function Starfield({ paused }: { paused: boolean }) {
+function Starfield() {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = ref.current;
@@ -22,7 +22,7 @@ function Starfield({ paused }: { paused: boolean }) {
         ctx.fillStyle = `rgba(${starColor},${alpha})`;
         ctx.beginPath();ctx.arc(star.x * width, star.y * height, star.r, 0, Math.PI * 2);ctx.fill();
       }
-      if (!paused && !reduce.matches && visible && !document.hidden) frame = requestAnimationFrame(draw);
+      if (!reduce.matches && visible && !document.hidden) frame = requestAnimationFrame(draw);
     };
     const restart = () => { cancelAnimationFrame(frame);draw(); };
     const resize = () => {
@@ -38,17 +38,16 @@ function Starfield({ paused }: { paused: boolean }) {
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     reduce.addEventListener('change', restart);document.addEventListener('visibilitychange', restart);
     return () => { cancelAnimationFrame(frame);observer?.disconnect();visibility?.disconnect();themeObserver.disconnect();reduce.removeEventListener('change', restart);document.removeEventListener('visibilitychange', restart); };
-  }, [paused]);
+  }, []);
   return <canvas ref={ref} className="orbit-stars" aria-hidden="true" />;
 }
 
 export function OrbitShowcase() {
-  const [paused, setPaused] = useState(false);
-  return <section className={`orbit-section${paused ? ' is-paused' : ''}`} aria-labelledby="orbit-title">
-    <Starfield paused={paused} />
+  return <section className="orbit-section" aria-labelledby="orbit-title">
+    <Starfield />
     <div className="container">
       <div className="section-intro reveal"><p className="eyebrow">PLAYWORSHIP CONTIGO</p><h2 id="orbit-title">Tu música.<br /><span>En tu equipo.</span></h2><p>Windows, macOS y Android.<br />Beta para iOS y Mac mediante TestFlight.</p></div>
-      <div className="orbit-system orbit-devices" aria-hidden="true" data-motion={paused ? 'paused' : 'running'}>
+      <div className="orbit-system orbit-devices" aria-hidden="true" data-motion="ambient">
         <div className="orbit-track orbit-track-one"><div className="orbit-spin">
           <span className="orbit-node"><span className="orbit-counter"><DeviceIcon device="phone" platform="apple" /></span></span>
           <span className="orbit-node orbit-node-opposite"><span className="orbit-counter"><DeviceIcon device="phone" platform="android" /></span></span>
@@ -64,7 +63,7 @@ export function OrbitShowcase() {
         <div className="orbit-core"><img src="/assets/img/icono-pw1.png" width="128" height="128" alt="" /></div>
       </div>
       <p className="orbit-device-types">Computador · Tableta · Celular</p>
-      <div className="orbit-controls"><a className="text-link" href="#descargas">Elige tu plataforma</a><button type="button" className="motion-toggle" aria-pressed={paused} onClick={() => setPaused(v => !v)}>{paused ? 'Reanudar animación' : 'Pausar animación'}</button></div>
+      <div className="orbit-controls"><a className="text-link" href="#descargas">Elige tu plataforma</a></div>
     </div>
   </section>;
 }

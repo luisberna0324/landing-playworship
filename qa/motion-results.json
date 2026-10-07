@@ -14,11 +14,7 @@
       "result": "pass"
     },
     {
-      "name": "Motion pause updates state and accessible button",
-      "result": "pass"
-    },
-    {
-      "name": "Motion can resume",
+      "name": "Decorative pause controls removed as requested",
       "result": "pass"
     },
     {

@@ -1,56 +1,44 @@
 # PlayWorship · revisión de landing
 
-Revisión inspirada en los efectos observados directamente en VMPal. Usa el logo y las capturas de PlayWorship. El canal live y la configuración de producción se conservan.
+Rama `preview/vmpal-review-20261006`. Canal temporal `landing-review-20261006`, vigente hasta el 13 de octubre de 2026 a las 22:55 UTC. No fusionar ni ejecutar `npm run deploy` para esta revisión.
 
-## Revisión de movimiento
-- Tres ventanas reales se abren con el scroll: capas a escala .84/.92/1 y separación progresiva 24%/12%/0
-- Apariciones con 28 px de recorrido; opacidad .9 s y desplazamiento 1 s
-- Tres órbitas de 46/70/96 s, con contrarrotación para mantener derechos los iconos
-- Fondo de puntos sutiles, header que pasa a desenfoque al desplazarse y transiciones hover
-- Control para pausar las órbitas y el fondo; preferencia de movimiento reducido respetada
-- Se mantienen imágenes reales estáticas. No se presenta una secuencia de pantallazos como video continuo
+## Apariencia
 
-## Paddle conservado
-- Se mantienen el componente de precios, BillingProvider, selección mensual/anual, cargador Paddle.js, metadatos y checkout overlay originales
-- En `build:preview`, las acciones están claramente marcadas como Paddle Sandbox; rechazan configuración o token live
-- Se restituye únicamente la ruta original `/api/paddle/config` al servicio existente. No se despliega ni modifica el backend
-- El endpoint Sandbox existente fue verificado: respuesta 200, entorno Sandbox, checkout y aprovisionamiento listos, token público de cliente de prueba y los cuatro price IDs presentes
-- El endpoint de producción devuelve 503 en la comprobación actual; no se habilita checkout live en la revisión
-- No se realizaron compras, se ingresaron datos de pago ni se probaron webhooks
+- Temas Claro / Oscuro / Sistema, persistencia y aplicación antes del primer renderizado
+- Tres ventanas de producto que se despliegan al desplazarse, apariciones suaves y header translúcido
+- Seis iconos de plataforma con una pequeña insignia de computador, tableta o teléfono, usando los glifos originales
+- Órbitas de 46/70/96 segundos en escritorio; período compartido de 72 segundos en pantallas estrechas para mantener las insignias separadas
+- Fondo original de formas fluidas en verde y una estela local de caracteres ASCII al mover el puntero, inspirado en la composición observada en https://agent.minimax.io/download
+- Sin botones de pausa para la decoración, por petición del usuario. Se mantiene la preferencia de movimiento reducido, el tratamiento táctil y la suspensión fuera de pantalla/pestaña
 
-## Ejecutar
+## Videos reales existentes
+
+Se reutilizan exactamente los archivos de la página de producción; no son pruebas nuevas de la versión actual.
+
+- Hero: `hero-web.mp4`, 108.833 segundos, 1280×804, 24 fps, sin audio. Muestra PlayWorship 1.1.4, biblioteca, mezcla y Pads. Presentación sin marco añadido
+- Móvil: `mobileNativo-web.mp4`, 77.292 segundos, 1280×1280, 24 fps, sin audio. Se conserva el cuadro completo y su fondo azul original. Comienza en la escena de setlist vertical a los 49 segundos, con opción de verlo desde el inicio
+- Setlists: `setslistosservicio-web.mp4`, 21.13 segundos, 1280×862
+- Secciones: `secciones-web.mp4`, 39.38 segundos, 1280×870
+- Ruteo: `salidasseparadas-web.mp4`, 13.58 segundos, 1280×828. Muestra asignación de canales, no verifica salidas físicas ni audio
+
+El reproductor carga cerca de la pantalla y solicita reproducción automática silenciada cuando es visible. Conserva controles nativos, pausa fuera de vista y respeta la pausa manual. Con movimiento reducido o bloqueo de autoplay ofrece reproducción manual. La galería monta únicamente el clip seleccionado.
+
+## Integración conservada
+
+- Paddle mantiene BillingProvider, selección mensual/anual, metadatos y overlay originales. La revisión fuerza Sandbox y rechaza configuración live
+- Únicamente la ruta pública original `/api/paddle/config` apunta al servicio existente. No se modifica backend, IAM, Auth, facturación ni producción
+- Los importes y la configuración comercial no cambian. El texto de revisión pide comprobar total e impuestos en Paddle; valores Sandbox no verifican precios live
+- Descargas estables desde el manifiesto oficial. TestFlight exacto proporcionado por el usuario: https://testflight.apple.com/join/TsUWWH1r; Mac estable permanece separado de la beta
+- El canal de revisión usa no-store y los marcos de QA incluyen una huella del HTML completo del build
+
+## Ejecutar y verificar
 
     npm ci
     npm run build:preview
-
-La revisión toma una copia validada del manifiesto oficial de descargas en `dist/review-downloads.json`. Evita cambiar CORS del bucket; el comportamiento de producción sigue leyendo el manifiesto en vivo.
-
-Controles locales (no sustituyen renderizado en navegador):
-
-    npm install --no-save --package-lock=false jsdom
+    node --test scripts/test-theme.mjs scripts/test-production-video.mjs
     node qa/check-preview.cjs
-    node qa/check-paddle.cjs
+    node qa/check-appearance.cjs
     node qa/check-motion.cjs
+    node qa/check-paddle.cjs
 
-Los controles Paddle usan un SDK simulado local, sin contactar al proveedor ni crear pagos. La URL de revisión debe verificarse después de su actualización para confirmar el overlay real, animaciones, móvil y navegación.
-
-## Estado y límites
-
-La revisión previa se publicó sólo en el canal temporal `landing-review-20261006`, que vence el 13 de octubre de 2026 a las 22:55 UTC. La revisión de movimiento y Paddle se publicó con autorización en este mismo canal. Se verificaron visualmente el despliegue de ventanas, las órbitas, la pausa y el overlay real marcado Test Mode; no se completó ninguna compra. La siguiente iteración añade el enlace TestFlight proporcionado por el usuario y un tratamiento SVG coherente de plataformas.
-
-Repositorio: `luisberna0324/landing-playworship`. Base original: `a31750867309c10a0a68c1c6e6f78c1dd4bfad2f`. Rama de revisión: `preview/vmpal-review-20261006`. No fusionar ni ejecutar `npm run deploy` para esta revisión.
-
-## TestFlight, precios y caché de revisión
-- Invitación proporcionada por el usuario: https://testflight.apple.com/join/TsUWWH1r. El título público de Apple identifica PlayWorship; no se verificaron builds compatibles ni cupos ni se aceptó la invitación
-- Mac conserva un instalador estable independiente de su acceso a beta. iOS y Mac enlazan a la misma invitación; TestFlight determina compatibilidad y disponibilidad
-- Solo en el build de revisión, el texto deja de calificar los importes como base: el total y los impuestos se consultan en Paddle. Las cifras y la configuración comercial no cambian; un importe de Sandbox no verifica precios live
-- El canal de revisión emite no-store y sus marcos de QA incluyen el fingerprint del build. La caché de producción no se cambia
-
-## Iteración del 7 de octubre: dispositivos y apariencia
-- Seis siluetas SVG: celulares y tabletas Apple/Android, portátil Windows y escritorio Mac. Conservan las tres velocidades orbitales y las contrarrotaciones
-- Selector Claro / Oscuro / Sistema con preferencia persistente, cambios del sistema, navegación por teclado y aplicación antes del primer renderizado
-- Fondo del hero con luces suaves y puntos que responden al puntero fino. La entrada se limita a un frame por ráfaga; en táctiles queda el movimiento ambiental. Pausa explícita y preferencia de movimiento reducido
-- Paleta clara con superficies blancas, texto oscuro y capturas reales conservadas. El logo original se muestra sobre una pequeña placa oscura para conservar su contraste
-- Por petición expresa posterior, se reutiliza el video exacto del hero de producción: `/assets/video/hero-web.mp4`, 108.833 s, 1280×804, H.264 a 24 fps, sin audio. Muestra PlayWorship 1.1.4, el contador y medidores avanzando, Pads Light Ambient cargados y acercamientos posteriores. No se presenta como prueba nueva de la versión actual
-- El video usa el poster original, controles nativos, playsInline y preload=none. Solo se reproduce por acción del usuario, también con movimiento reducido
-- Verificación local adicional: 13 pruebas del tema y 10 de comportamiento integrado. La revisión visual en navegador y la publicación de esta iteración aún requieren completarse
+Los controles de DOM requieren jsdom. Las pruebas Paddle usan un SDK simulado local y no crean pagos. El renderizado final se verifica en la URL aislada, en escritorio y marcos adaptables de 320/390/768 px. No sustituye pruebas en teléfonos físicos. El canal live debe conservar su versión anterior en cada despliegue.

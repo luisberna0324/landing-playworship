@@ -1,4 +1,5 @@
 import { InteractiveBackdrop } from './InteractiveBackdrop';
+import { ProductionVideo } from './ProductionVideo';
 export function Hero() {
   return <section className="hero hero-with-background" id="top" aria-labelledby="hero-title">
     <InteractiveBackdrop />
@@ -14,10 +15,7 @@ export function Hero() {
         <p className="hero-note">Local y sin conexión <span>·</span> Windows, macOS y Android <span>·</span> iOS en beta</p>
       </div>
       <figure className="hero-visual reveal">
-        <div className="product-window"><video className="hero-demo-video" width="1280" height="804" controls playsInline preload="none" poster="/assets/video/hero-web-poster.jpg" aria-label="Reproducir el video de PlayWorship con biblioteca, mezclador y Pads" aria-describedby="hero-demo-caption">
-          <source src="/assets/video/hero-web.mp4" type="video/mp4" />
-          Tu navegador no puede reproducir este video. <a href="/assets/video/hero-web.mp4">Abrir el video de PlayWorship</a>.
-        </video></div>
+        <div className="product-window"><ProductionVideo /></div>
         <figcaption id="hero-demo-caption">Demo de PlayWorship 1.1.4 · Biblioteca, mezcla y Pads · Sin audio</figcaption>
       </figure>
     </div>

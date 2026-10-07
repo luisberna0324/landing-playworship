@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { MobileShowcase } from './components/MobileShowcase';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProductOverview } from './components/ProductOverview';
@@ -12,12 +14,19 @@ import { BillingProvider } from './context/BillingContext';
 
 export default function App() {
   useReveal('.reveal');
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      try { const id = decodeURIComponent(window.location.hash.slice(1));if (id) document.getElementById(id)?.scrollIntoView(); } catch { /* Ignore malformed fragments. */ }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
   return <BillingProvider>
     <a className="skip-link" href="#main">Saltar al contenido</a>
     <Header />
     <main id="main">
       <Hero />
       <ScrollShowcase />
+      <MobileShowcase />
       <ProductOverview />
       <OrbitShowcase />
       <Downloads />

@@ -19,7 +19,27 @@
       "result": "pass"
     },
     {
-      "name": "Exact production clip has manual controls, deferred loading and honest caption",
+      "name": "Production demos retain controls, inline playback and valid exact assets",
+      "result": "pass"
+    },
+    {
+      "name": "Decorative animations have no visible pause buttons",
+      "result": "pass"
+    },
+    {
+      "name": "Feature tabs replace only the selected demo with correct semantics",
+      "result": "pass"
+    },
+    {
+      "name": "Keyboard End selects routing demo",
+      "result": "pass"
+    },
+    {
+      "name": "Mobile demo begins at the verified phone scene",
+      "result": "pass"
+    },
+    {
+      "name": "Mobile demo can restart from the original beginning",
       "result": "pass"
     },
     {

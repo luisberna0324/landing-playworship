@@ -5,6 +5,7 @@ import { ThemeControls } from './ThemeControls';
 
 const NAV_LINKS = [
   { href: '#producto', label: 'Producto' },
+  { href: '#movil', label: 'Móvil' },
   { href: '#precios', label: 'Local + Cloud' },
   { href: 'https://help.playworship.app', label: 'Ayuda' },
 ];

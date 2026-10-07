@@ -15,8 +15,7 @@ async function instance(reduced=false){
 (async()=>{const tests=[];let x=await instance();let section=x.d.querySelector('.workflow-section');
  assert.equal(section.dataset.progress,'0.000');tests.push('Scroll fan starts stacked at progress0');x.setTop(-x.w.innerHeight*.4);await ready(()=>section.dataset.progress==='1.000');tests.push('Scroll fan reaches open progress1 at the end of its range');
  assert.equal(x.d.querySelectorAll('.stack-window').length,3);assert.equal(x.d.querySelectorAll('.orbit-track').length,3);tests.push('Three real-image layers and three orbit tracks present');
- x.d.querySelector('.motion-toggle').click();await ready(()=>x.d.querySelector('.orbit-system').dataset.motion==='paused');assert.equal(x.d.querySelector('.motion-toggle').getAttribute('aria-pressed'),'true');tests.push('Motion pause updates state and accessible button');
- x.d.querySelector('.motion-toggle').click();await ready(()=>x.d.querySelector('.orbit-system').dataset.motion==='running');tests.push('Motion can resume');x.dom.window.close();
+ assert.equal(x.d.querySelectorAll('.motion-toggle,.hero-background-toggle').length,0);tests.push('Decorative pause controls removed as requested');x.dom.window.close();
  x=await instance(true);assert.equal(x.d.querySelector('.workflow-section').dataset.progress,'1.000');tests.push('Reduced-motion preference shows the fan fully open without scroll movement');x.dom.window.close();
  const result={type:'Local motion behavior checks, not rendered animation evidence',tests:tests.map(name=>({name,result:'pass'}))};fs.writeFileSync(path.join(root,'qa/motion-results.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));
 })().catch(e=>{console.error(e.message);process.exit(1)});
