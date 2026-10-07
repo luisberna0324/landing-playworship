@@ -35,11 +35,7 @@
       "result": "pass"
     },
     {
-      "name": "Mobile demo begins at the verified phone scene",
-      "result": "pass"
-    },
-    {
-      "name": "Mobile demo can restart from the original beginning",
+      "name": "Mobile demo preserves the complete original clip and square frame",
       "result": "pass"
     },
     {

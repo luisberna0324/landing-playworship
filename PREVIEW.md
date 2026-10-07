@@ -16,7 +16,7 @@ Rama `preview/vmpal-review-20261006`. Canal temporal `landing-review-20261006`, 
 Se reutilizan exactamente los archivos de la página de producción; no son pruebas nuevas de la versión actual.
 
 - Hero: `hero-web.mp4`, 108.833 segundos, 1280×804, 24 fps, sin audio. Muestra PlayWorship 1.1.4, biblioteca, mezcla y Pads. Presentación sin marco añadido
-- Móvil: `mobileNativo-web.mp4`, 77.292 segundos, 1280×1280, 24 fps, sin audio. Se conserva el cuadro completo y su fondo azul original. Comienza en la escena de setlist vertical a los 49 segundos, con opción de verlo desde el inicio
+- Móvil: `mobileNativo-web.mp4`, 77.292 segundos, 1280×1280, 24 fps, sin audio. Se conserva el cuadro completo y su fondo azul original. Se reproduce desde el inicio y conserva las vistas horizontal y vertical del recorrido original
 - Setlists: `setslistosservicio-web.mp4`, 21.13 segundos, 1280×862
 - Secciones: `secciones-web.mp4`, 39.38 segundos, 1280×870
 - Ruteo: `salidasseparadas-web.mp4`, 13.58 segundos, 1280×828. Muestra asignación de canales, no verifica salidas físicas ni audio
@@ -29,7 +29,7 @@ El reproductor carga cerca de la pantalla y solicita reproducción automática s
 - Únicamente la ruta pública original `/api/paddle/config` apunta al servicio existente. No se modifica backend, IAM, Auth, facturación ni producción
 - Los importes y la configuración comercial no cambian. El texto de revisión pide comprobar total e impuestos en Paddle; valores Sandbox no verifican precios live
 - Descargas estables desde el manifiesto oficial. TestFlight exacto proporcionado por el usuario: https://testflight.apple.com/join/TsUWWH1r; Mac estable permanece separado de la beta
-- El canal de revisión usa no-store y los marcos de QA incluyen una huella del HTML completo del build
+- El HTML de revisión usa no-store y los marcos de QA incluyen una huella del HTML completo del build. Los videos originales conservan caché pública de una hora para admitir reproducción y búsquedas por rango
 
 ## Ejecutar y verificar
 

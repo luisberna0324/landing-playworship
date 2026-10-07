@@ -15,9 +15,15 @@ for (const name of await readdir('dist/assets/video')) {
 await rm('dist/assets/gif', { recursive: true, force: true });
 await rm('dist/downloads', { recursive: true, force: true });
 const source = 'https://storage.googleapis.com/adoracion-studio-installers-20260516-28602/installers/latest.json';
-const response = await fetch(source, { signal: AbortSignal.timeout(20000) });
-if (!response.ok) throw new Error(`Download manifest: ${response.status}`);
-const manifest = await response.json();
+let manifest;
+if (process.env.PLAYWORSHIP_REVIEW_USE_SNAPSHOT === 'true') {
+  // Explicit offline mode uses the public links already verified during this review.
+  manifest = JSON.parse(await readFile('scripts/review-downloads.snapshot.json', 'utf8'));
+} else {
+  const response = await fetch(source, { signal: AbortSignal.timeout(20000) });
+  if (!response.ok) throw new Error(`Download manifest: ${response.status}`);
+  manifest = await response.json();
+}
 if (!/^\d+\.\d+\.\d+$/.test(manifest.version) || !manifest.platforms) throw new Error('Invalid download manifest');
 for (const platform of ['macos', 'windows', 'android']) {
   const item = manifest.platforms[platform];

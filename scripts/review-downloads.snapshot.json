@@ -1,0 +1,23 @@
+{
+  "version": "2.3.2",
+  "platforms": {
+    "macos": {
+      "available": true,
+      "format": "pkg",
+      "url": "https://storage.googleapis.com/adoracion-studio-installers-20260516-28602/installers/macos/v2.3.2/playworship-macos-installer-2.3.2.pkg"
+    },
+    "windows": {
+      "available": true,
+      "format": "exe",
+      "url": "https://storage.googleapis.com/adoracion-studio-installers-20260516-28602/installers/windows/v2.3.2/playworship-windows-installer-2.3.2-x64.exe"
+    },
+    "android": {
+      "available": true,
+      "format": "apk",
+      "url": "https://storage.googleapis.com/adoracion-studio-installers-20260516-28602/installers/android/v2.3.2/playworship-android-2.3.2-arm64.apk"
+    },
+    "ios": {
+      "available": false
+    }
+  }
+}
