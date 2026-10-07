@@ -53,3 +53,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;cursor:po
 .orbit-counter .platform-icon{width:31px;height:31px}
 @media(max-width:759px){.orbit-counter .platform-icon{width:24px;height:24px}}
 @media(max-width:539px){.download-grid{grid-template-columns:1fr;max-width:420px;margin-inline:auto}.download-card{padding:24px 24px 0}.download-card h3{font-size:21px}.download-card p{font-size:13px;min-height:auto}.download-card small{font-size:11px;margin:14px 0 20px}.platform-symbol{margin-bottom:22px}.download-actions{min-height:58px}.download-actions .platform-download{font-size:13px;min-height:58px}.platform-beta{font-size:12px;min-height:48px}.download-card .pill{display:inline-block;margin:0 0 0 6px}.ios-card h3{margin-bottom:10px}}
+
+/* The exact existing production clip plays only on request, including reduced-motion mode. */
+.hero-visual{max-width:1000px;margin-inline:auto}
+.product-window .hero-demo-video{width:100%;height:auto;aspect-ratio:1280/804;object-fit:contain;background:#101511}

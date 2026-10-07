@@ -51,5 +51,6 @@ Repositorio: `luisberna0324/landing-playworship`. Base original: `a31750867309c1
 - Selector Claro / Oscuro / Sistema con preferencia persistente, cambios del sistema, navegación por teclado y aplicación antes del primer renderizado
 - Fondo del hero con luces suaves y puntos que responden al puntero fino. La entrada se limita a un frame por ráfaga; en táctiles queda el movimiento ambiental. Pausa explícita y preferencia de movimiento reducido
 - Paleta clara con superficies blancas, texto oscuro y capturas reales conservadas. El logo original se muestra sobre una pequeña placa oscura para conservar su contraste
-- Se conserva el poster real mientras se comprueba un clip continuo con reproducción y Pads. No se añade un video simulado
+- Por petición expresa posterior, se reutiliza el video exacto del hero de producción: `/assets/video/hero-web.mp4`, 108.833 s, 1280×804, H.264 a 24 fps, sin audio. Muestra PlayWorship 1.1.4, el contador y medidores avanzando, Pads Light Ambient cargados y acercamientos posteriores. No se presenta como prueba nueva de la versión actual
+- El video usa el poster original, controles nativos, playsInline y preload=none. Solo se reproduce por acción del usuario, también con movimiento reducido
 - Verificación local adicional: 13 pruebas del tema y 10 de comportamiento integrado. La revisión visual en navegador y la publicación de esta iteración aún requieren completarse

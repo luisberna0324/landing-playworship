@@ -19,7 +19,7 @@
       "result": "pass"
     },
     {
-      "name": "Demo uses honest static capture while continuous recording is pending",
+      "name": "Exact production clip has manual controls, deferred loading and honest caption",
       "result": "pass"
     },
     {

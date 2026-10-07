@@ -14,8 +14,11 @@ export function Hero() {
         <p className="hero-note">Local y sin conexión <span>·</span> Windows, macOS y Android <span>·</span> iOS en beta</p>
       </div>
       <figure className="hero-visual reveal">
-        <div className="product-window"><img src="/assets/captures/hero-demo-waveform-mixer.png" width="1354" height="635" alt="Interfaz real de PlayWorship con waveform, secciones y mezclador de pistas de la demo Luz de esperanza" fetchPriority="high" /></div>
-        <figcaption>Tu música, tus secciones, tu mezcla. Todo a la vista.</figcaption>
+        <div className="product-window"><video className="hero-demo-video" width="1280" height="804" controls playsInline preload="none" poster="/assets/video/hero-web-poster.jpg" aria-label="Reproducir el video de PlayWorship con biblioteca, mezclador y Pads" aria-describedby="hero-demo-caption">
+          <source src="/assets/video/hero-web.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir este video. <a href="/assets/video/hero-web.mp4">Abrir el video de PlayWorship</a>.
+        </video></div>
+        <figcaption id="hero-demo-caption">Demo de PlayWorship 1.1.4 · Biblioteca, mezcla y Pads · Sin audio</figcaption>
       </figure>
     </div>
   </section>;
