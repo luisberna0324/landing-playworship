@@ -1,5 +1,6 @@
 // Produces only a static review build. Does not deploy or change production settings.
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { writeFile, readFile } from 'node:fs/promises';
 const built = spawnSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'build'], {
   stdio: 'inherit', env: { ...process.env, VITE_REVIEW_PREVIEW: 'true' },
@@ -20,8 +21,8 @@ await writeFile('dist/review-downloads.json', JSON.stringify(manifest, null, 2) 
 console.log(`Review download snapshot: v${manifest.version}. Production still reads the live manifest.`);
 
 const index = await readFile('dist/index.html', 'utf8');
-const build = index.match(/src="[^" ]*\/index-([^" ]+)\.js"/)?.[1];
-if (!build) throw new Error('Missing preview build fingerprint');
+if (!index.match(/src="[^" ]*\/index-([^" ]+)\.js"/)) throw new Error('Missing preview entry point');
+const build = createHash('sha256').update(index).digest('hex').slice(0, 12);
 const frame = await readFile('qa/review-frame.html', 'utf8');
 await writeFile('dist/review-qa.html', frame.replaceAll('__PREVIEW_BUILD__', build));
 const pricing = await readFile('dist/precios.html', 'utf8');
