@@ -1,0 +1,45 @@
+{
+  "type": "DOM behavior checks, not rendered browser evidence",
+  "checks": [
+    {
+      "name": "Theme menu offers explicit light, dark and system choices",
+      "result": "pass"
+    },
+    {
+      "name": "Selecting dark updates document, storage and returns focus",
+      "result": "pass"
+    },
+    {
+      "name": "Keyboard Home targets the first appearance choice",
+      "result": "pass"
+    },
+    {
+      "name": "Light choice updates document without changing product links",
+      "result": "pass"
+    },
+    {
+      "name": "Six recognizable devices retain the existing platform family",
+      "result": "pass"
+    },
+    {
+      "name": "Fine pointer moves decorative light toward the pointer",
+      "result": "pass"
+    },
+    {
+      "name": "Pause freezes pointer response and decorative animation state",
+      "result": "pass"
+    },
+    {
+      "name": "Resume restores pointer response",
+      "result": "pass"
+    },
+    {
+      "name": "Touch/coarse pointer never drives the background",
+      "result": "pass"
+    },
+    {
+      "name": "Reduced motion stops backdrop and opens the static fan",
+      "result": "pass"
+    }
+  ]
+}

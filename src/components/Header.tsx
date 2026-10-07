@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { BrandLogo } from './BrandLogo';
 import { useScrolled } from '../hooks/useScrolled';
+import { ThemeControls } from './ThemeControls';
 
 const NAV_LINKS = [
   { href: '#producto', label: 'Producto' },
@@ -35,6 +36,7 @@ export function Header() {
         {NAV_LINKS.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}
       </nav>
       <a className="header-cta" href="#descargas">Descargar </a>
+      <ThemeControls onOpen={() => setMenuOpen(false)} />
       <button ref={toggleRef} className="header-menu-toggle" aria-controls="mobile-menu" aria-expanded={menuOpen} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} onClick={() => setMenuOpen(!menuOpen)}>
         <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d={menuOpen ? 'M5 5l14 14M19 5 5 19' : 'M4 7h16M4 12h16M4 17h16'} stroke="currentColor" strokeWidth="1.5" fill="none" /></svg>
       </button>

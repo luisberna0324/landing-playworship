@@ -4,6 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#111413" />
+    <script id="theme-init">
+      // Apply the saved appearance before styles and the app can paint.
+      (function () {
+        var preference = 'system';
+        try {
+          var stored = window.localStorage.getItem('playworship-theme');
+          if (stored === 'light' || stored === 'dark' || stored === 'system') preference = stored;
+        } catch (_) {}
+        var dark = false;
+        try { dark = window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (_) {}
+        var theme = preference === 'system' ? (dark ? 'dark' : 'light') : preference;
+        var root = document.documentElement;
+        root.dataset.theme = theme;
+        root.dataset.themePreference = preference;
+        root.style.colorScheme = theme;
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#111413' : '#f7faf7');
+      })();
+    </script>
     <title>Play Worship — Multitracks profesionales para tu equipo de alabanza</title>
     <meta
       name="description"

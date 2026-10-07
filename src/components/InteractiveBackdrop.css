@@ -1,0 +1,19 @@
+.hero{position:relative;isolation:isolate;overflow:clip}
+.hero>.container{position:relative;z-index:1}
+.interactive-backdrop{position:absolute;inset:-88px 0 0;z-index:0;pointer-events:none;overflow:hidden;--light-x:50%;--light-y:30%;--drift-x:0px;--drift-y:0px;--ambient-green:36,177,91;--ambient-mint:62,132,108;mask-image:linear-gradient(#000 0%,#000 75%,transparent 100%)}
+.ambient-shift{position:absolute;inset:0;translate:var(--drift-x) var(--drift-y);transition:translate .8s cubic-bezier(.2,.7,.2,1)}
+.ambient-glow{position:absolute;display:block;will-change:transform;filter:blur(12px);border-radius:50%;opacity:.5}
+.ambient-glow-one{width:min(1000px,95vw);height:560px;top:-190px;left:calc(50% - min(500px,47.5vw));background:radial-gradient(ellipse,rgba(var(--ambient-green),.15),rgba(var(--ambient-green),.035) 48%,transparent 72%);animation:ambient-breathe-one 18s ease-in-out infinite alternate}
+.ambient-glow-two{width:640px;height:600px;left:-320px;top:250px;background:radial-gradient(ellipse,rgba(var(--ambient-mint),.12),transparent 68%);animation:ambient-breathe-two 23s ease-in-out infinite alternate}
+.ambient-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(133,193,151,.2) .8px,transparent .9px);background-size:32px 32px;opacity:.42;mask-image:radial-gradient(ellipse 650px 540px at 50% 26%,#000,transparent 85%)}
+.ambient-spotlight{position:absolute;inset:0;opacity:.65;background:radial-gradient(ellipse 300px 210px at var(--light-x) var(--light-y),rgba(var(--ambient-green),.095),transparent 80%);transition:opacity .6s}
+.interactive-backdrop.is-still .ambient-shift{transition:none}
+.interactive-backdrop.is-still .ambient-glow{animation-play-state:paused;will-change:auto}
+.hero-background-toggle{position:absolute;z-index:2;right:max(40px,calc((100vw - 1160px)/2));bottom:22px;display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:7px 10px;background:transparent;border:1px solid var(--border);border-radius:7px;font-size:11px;color:var(--muted)}
+.hero-background-toggle svg{width:16px;height:16px}
+.hero-background-toggle:hover{background:var(--surface);color:var(--text)}
+@keyframes ambient-breathe-one{from{transform:translate3d(-5%,-2%,0) scale(.95)}to{transform:translate3d(7%,8%,0) scale(1.13)}}
+@keyframes ambient-breathe-two{from{transform:translate3d(0,-9%,0)}to{transform:translate3d(18%,7%,0)}}
+@media(hover:none),(pointer:coarse){.ambient-spotlight{display:none}.ambient-shift{translate:0 0!important}.ambient-grid{opacity:.28}}
+@media(max-width:759px){.hero.hero-with-background{padding-bottom:88px}.hero-background-toggle{right:20px;bottom:22px}.ambient-glow-one{height:440px;top:-130px}.ambient-grid{background-size:27px 27px}}
+@media(prefers-reduced-motion:reduce){.ambient-glow{animation:none!important;will-change:auto}.ambient-shift{translate:0 0!important;transition:none}.ambient-spotlight,.hero-background-toggle{display:none}}

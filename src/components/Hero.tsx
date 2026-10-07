@@ -1,5 +1,7 @@
+import { InteractiveBackdrop } from './InteractiveBackdrop';
 export function Hero() {
-  return <section className="hero" id="top" aria-labelledby="hero-title">
+  return <section className="hero hero-with-background" id="top" aria-labelledby="hero-title">
+    <InteractiveBackdrop />
     <div className="container">
       <div className="hero-copy">
         <p className="eyebrow reveal">PLAYWORSHIP · REPRODUCTOR MULTITRACK</p>

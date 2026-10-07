@@ -1,0 +1,89 @@
+/* Scoped hardware artwork: inherit the page's dark/light device tokens. */
+.orbit-system.orbit-devices {
+  width: min(700px, calc(100% - 24px));
+  --device-size: clamp(64px, 14vw, 108px);
+}
+
+/* Start the paired devices 60 degrees apart while preserving all three speeds. */
+.orbit-devices .orbit-track-one { width: 54%; --offset: -3.833333s; }
+.orbit-devices .orbit-track-two { width: 74%; --offset: -17.5s; }
+.orbit-devices .orbit-track-three { width: 92%; --offset: -40s; }
+
+.orbit-devices .orbit-node {
+  width: var(--device-size);
+  height: var(--device-size);
+  left: calc(50% - var(--device-size) / 2);
+  top: calc(var(--device-size) / -2);
+}
+
+.orbit-devices .orbit-node-opposite {
+  top: auto;
+  bottom: calc(var(--device-size) / -2);
+}
+
+.orbit-devices .orbit-counter {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--device-border, #91af9b);
+}
+
+.orbit-devices .device-icon {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 7px 9px #0003);
+}
+
+.orbit-devices .device-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.orbit-devices .device-shell { fill: var(--device-bg, #24352b); }
+.orbit-devices .device-screen { fill: var(--device-screen, #12291b); stroke: var(--device-border, #91af9b); stroke-opacity: .5; }
+.orbit-devices .device-notch { fill: var(--device-bg, #24352b); stroke: none; }
+.orbit-devices .device-camera { fill: currentColor; stroke: none; }
+.orbit-devices .device-detail { opacity: .75; }
+
+.orbit-devices .device-platform {
+  position: absolute;
+  left: 50%;
+  top: 49%;
+  width: 25%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  color: var(--device-ink, #d7f0df);
+}
+
+.orbit-devices .device-icon-desktop .device-platform,
+.orbit-devices .device-icon-laptop .device-platform { top: 40%; }
+.orbit-devices .device-icon-phone .device-platform { width: 23%; }
+.orbit-devices .device-platform .platform-icon,
+.orbit-devices .device-platform .platform-logo { width: 100%; height: 100%; }
+
+.orbit-device-types {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: .07em;
+  color: var(--muted);
+  margin: 2px auto 14px;
+}
+
+@media (max-width: 759px) {
+  .orbit-devices .orbit-core { width: 72px; height: 72px; border-radius: 19px; }
+  .orbit-devices .orbit-core img { width: 53px; height: 53px; }
+  .orbit-device-types { font-size: 11px; margin-top: 14px; margin-bottom: 0; letter-spacing: .04em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-devices .orbit-track-one .orbit-spin { rotate: 30deg; }
+  .orbit-devices .orbit-track-one .orbit-counter { rotate: -30deg; }
+  .orbit-devices .orbit-track-two .orbit-spin { rotate: 90deg; }
+  .orbit-devices .orbit-track-two .orbit-counter { rotate: -90deg; }
+  .orbit-devices .orbit-track-three .orbit-spin { rotate: 150deg; }
+  .orbit-devices .orbit-track-three .orbit-counter { rotate: -150deg; }
+}

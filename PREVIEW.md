@@ -45,3 +45,11 @@ Repositorio: `luisberna0324/landing-playworship`. Base original: `a31750867309c1
 - Mac conserva un instalador estable independiente de su acceso a beta. iOS y Mac enlazan a la misma invitación; TestFlight determina compatibilidad y disponibilidad
 - Solo en el build de revisión, el texto deja de calificar los importes como base: el total y los impuestos se consultan en Paddle. Las cifras y la configuración comercial no cambian; un importe de Sandbox no verifica precios live
 - El canal de revisión emite no-store y sus marcos de QA incluyen el fingerprint del build. La caché de producción no se cambia
+
+## Iteración del 7 de octubre: dispositivos y apariencia
+- Seis siluetas SVG: celulares y tabletas Apple/Android, portátil Windows y escritorio Mac. Conservan las tres velocidades orbitales y las contrarrotaciones
+- Selector Claro / Oscuro / Sistema con preferencia persistente, cambios del sistema, navegación por teclado y aplicación antes del primer renderizado
+- Fondo del hero con luces suaves y puntos que responden al puntero fino. La entrada se limita a un frame por ráfaga; en táctiles queda el movimiento ambiental. Pausa explícita y preferencia de movimiento reducido
+- Paleta clara con superficies blancas, texto oscuro y capturas reales conservadas. El logo original se muestra sobre una pequeña placa oscura para conservar su contraste
+- Se conserva el poster real mientras se comprueba un clip continuo con reproducción y Pads. No se añade un video simulado
+- Verificación local adicional: 13 pruebas del tema y 10 de comportamiento integrado. La revisión visual en navegador y la publicación de esta iteración aún requieren completarse

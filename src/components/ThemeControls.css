@@ -1,0 +1,13 @@
+.theme-controls{position:relative;flex:0 0 auto}
+.theme-toggle{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border);border-radius:9px;background:transparent;color:var(--text);transition:background .18s,border-color .18s}
+.theme-toggle:hover,.theme-toggle[aria-expanded="true"]{background:var(--surface);border-color:var(--muted)}
+.theme-menu{position:absolute;right:0;top:calc(100% + 10px);z-index:60;width:188px;max-width:calc(100vw - 30px);padding:7px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);box-shadow:0 14px 38px #0002}
+.theme-menu-heading{display:block;padding:8px 10px 6px;color:var(--muted);font-size:10px;line-height:1.5;font-weight:600;text-transform:uppercase;letter-spacing:.12em}
+.theme-option{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;padding:10px;border-radius:7px;background:transparent;color:var(--text);font-size:13px;text-align:left}
+.theme-option:hover,.theme-option:focus-visible{background:color-mix(in srgb,var(--text) 7%,transparent)}
+.theme-option:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.theme-option[aria-checked="true"]{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.theme-check{margin-left:auto;flex-shrink:0;color:var(--accent)}
+.site-header .header-menu-toggle{flex:0 0 44px}
+@media(max-width:759px){.site-header .header-row{gap:10px}.site-header .header-brand{flex-shrink:0}}
+@media(max-width:400px){.site-header .header-cta{display:none}.site-header .header-row{gap:8px}}
