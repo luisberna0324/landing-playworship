@@ -1,11 +1,19 @@
 // Produces only a static review build. Does not deploy or change production settings.
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { writeFile, readFile } from 'node:fs/promises';
+import { writeFile, readFile, readdir, rm } from 'node:fs/promises';
 const built = spawnSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'build'], {
   stdio: 'inherit', env: { ...process.env, VITE_REVIEW_PREVIEW: 'true' },
 });
 if (built.status !== 0) process.exit(built.status || 1);
+// Keep a full repository checkout reproducible without shipping unused legacy movies or APKs.
+// Source assets and the normal production build are preserved.
+const reviewVideos = new Set(['hero-web.mp4', 'mobileNativo-web.mp4', 'setslistosservicio-web.mp4', 'secciones-web.mp4', 'salidasseparadas-web.mp4']);
+for (const name of await readdir('dist/assets/video')) {
+  if (name.endsWith('.mp4') && !reviewVideos.has(name)) await rm(`dist/assets/video/${name}`);
+}
+await rm('dist/assets/gif', { recursive: true, force: true });
+await rm('dist/downloads', { recursive: true, force: true });
 const source = 'https://storage.googleapis.com/adoracion-studio-installers-20260516-28602/installers/latest.json';
 const response = await fetch(source, { signal: AbortSignal.timeout(20000) });
 if (!response.ok) throw new Error(`Download manifest: ${response.status}`);

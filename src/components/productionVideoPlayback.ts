@@ -5,6 +5,13 @@ type PlaybackOptions = {
 
 const playbackOwners = new WeakMap<HTMLVideoElement, object>();
 
+function fragmentStart(source: string) {
+  const time = source.split('#')[1]?.split('&').find(part => part.startsWith('t='));
+  const match = time?.match(/^t=(?:npt:)?(\d+(?:\.\d+)?)(?:,\d+(?:\.\d+)?)?$/);
+  const seconds = match ? Number(match[1]) : 0;
+  return Number.isFinite(seconds) ? seconds : 0;
+}
+
 /** Own media side effects separately from rendering so native controls keep working. */
 export function attachProductionVideo(video: HTMLVideoElement, { source, onFallbackChange }: PlaybackOptions) {
   const owner = {};
@@ -24,6 +31,9 @@ export function attachProductionVideo(video: HTMLVideoElement, { source, onFallb
   let pending = false;
   let lastPlayWasManual = false;
   let geometryFrame = 0;
+  const startTime = fragmentStart(source);
+  let seekToStartPending = startTime > 0;
+  let manualAfterMetadata = false;
 
   video.muted = true;
   video.defaultMuted = true;
@@ -35,12 +45,27 @@ export function attachProductionVideo(video: HTMLVideoElement, { source, onFallb
   const pauseForEnvironment = () => {
     request += 1;
     pending = false;
+    manualAfterMetadata = false;
     video.autoplay = false;
     if (!video.paused) {
       ignoredPauses += 1;
       video.pause();
     }
     publish();
+  };
+  const applyStartTime = () => {
+    if (!seekToStartPending) return true;
+    if (video.readyState < 1) return false;
+    // Invalid positions beyond a finite clip fall back to its beginning.
+    const target = Number.isFinite(video.duration) && startTime >= video.duration ? 0 : startTime;
+    seekToStartPending = false;
+    try { video.currentTime = target; } catch {
+      blocked = true;
+      video.autoplay = false;
+      publish();
+      return false;
+    }
+    return true;
   };
   const load = () => {
     if (loaded) return;
@@ -52,6 +77,7 @@ export function attachProductionVideo(video: HTMLVideoElement, { source, onFallb
   const play = (manual: boolean) => {
     if (disposed || doc.hidden) return;
     if (manual) {
+      if ((finished || video.ended) && startTime > 0) seekToStartPending = true;
       userPaused = false;
       blocked = false;
       finished = false;
@@ -60,6 +86,11 @@ export function attachProductionVideo(video: HTMLVideoElement, { source, onFallb
     }
     load();
     if (!visible || (!manual && (reduced || userPaused || blocked || finished)) || pending) return;
+    if (!applyStartTime()) {
+      manualAfterMetadata = manual && video.readyState < 1;
+      publish();
+      return;
+    }
     const currentRequest = ++request;
     pending = true;
     lastPlayWasManual = manual;
@@ -94,13 +125,20 @@ export function attachProductionVideo(video: HTMLVideoElement, { source, onFallb
   };
   const sync = () => {
     if (disposed) return;
-    video.autoplay = loaded && visible && !doc.hidden && !reduced && !userPaused && !blocked && !finished;
+    video.autoplay = loaded && !seekToStartPending && visible && !doc.hidden && !reduced && !userPaused && !blocked && !finished;
     if (!visible || doc.hidden) pauseForEnvironment();
     else if (video.autoplay && video.paused && !pending) play(false);
     publish();
   };
   const onPlay = () => {
     if (!visible || doc.hidden) { pauseForEnvironment(); return; }
+    // Native replay usually resets the playhead to zero before this event.
+    if (finished && startTime > 0) seekToStartPending = true;
+    if (!applyStartTime()) {
+      pauseForEnvironment();
+      manualAfterMetadata = video.readyState < 1;
+      return;
+    }
     // Native play is also a valid explicit retry, including reduced-motion mode.
     if (!pending) lastPlayWasManual = true;
     userPaused = false;
@@ -123,6 +161,13 @@ export function attachProductionVideo(video: HTMLVideoElement, { source, onFallb
     finished = true;
     video.autoplay = false;
     publish();
+  };
+  const onMetadata = () => {
+    if (disposed || !applyStartTime()) return;
+    const manual = manualAfterMetadata;
+    manualAfterMetadata = false;
+    if (manual && visible && !doc.hidden) play(true);
+    else sync();
   };
   const onMotionChange = () => {
     reduced = motion.matches;
@@ -156,6 +201,7 @@ export function attachProductionVideo(video: HTMLVideoElement, { source, onFallb
   video.addEventListener('play', onPlay);
   video.addEventListener('pause', onPause);
   video.addEventListener('ended', onEnded);
+  video.addEventListener('loadedmetadata', onMetadata);
   doc.addEventListener('visibilitychange', onVisibility);
   if (motion.addEventListener) motion.addEventListener('change', onMotionChange);
   else motion.addListener(onMotionChange);
@@ -193,6 +239,7 @@ export function attachProductionVideo(video: HTMLVideoElement, { source, onFallb
       video.removeEventListener('play', onPlay);
       video.removeEventListener('pause', onPause);
       video.removeEventListener('ended', onEnded);
+      video.removeEventListener('loadedmetadata', onMetadata);
       doc.removeEventListener('visibilitychange', onVisibility);
       if (motion.removeEventListener) motion.removeEventListener('change', onMotionChange);
       else motion.removeListener(onMotionChange);

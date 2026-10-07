@@ -4,7 +4,7 @@
 .fluid-field,.ascii-trail,.fluid-fallback{position:absolute;inset:0;width:100%;height:100%;display:block}
 .fluid-field{z-index:1}.ascii-trail{z-index:2;pointer-events:none}
 .fluid-fallback{background:radial-gradient(ellipse 50% 37% at 30% 68%,#226946aa,transparent 75%),radial-gradient(ellipse 46% 40% at 80% 72%,#075938aa,transparent 77%),#09140f;transform-origin:50% 70%;animation:fluid-fallback-drift 16s ease-in-out infinite alternate}
-.interactive-backdrop[data-renderer="webgl"] .fluid-fallback{display:none}
+.interactive-backdrop[data-renderer="canvas2d"] .fluid-fallback{display:none}
 .interactive-backdrop[data-renderer="css"] .fluid-field{display:none}
 .interactive-backdrop[data-motion="idle"] .fluid-fallback,.interactive-backdrop[data-motion="reduced"] .fluid-fallback{animation-play-state:paused}
 @keyframes fluid-fallback-drift{from{transform:scale(1.03) rotate(-3deg)}to{transform:scale(1.15) rotate(4deg)}}

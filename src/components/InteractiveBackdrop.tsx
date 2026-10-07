@@ -1,31 +1,6 @@
 import { useEffect, useRef } from 'react';
 import './InteractiveBackdrop.css';
 
-const VERTEX = 'attribute vec2 position; void main(){gl_Position=vec4(position,0.,1.);}';
-// An original flowing field, inspired by the reference's broad folded forms.
-const FRAGMENT = `precision mediump float;
-uniform vec2 resolution; uniform float time; uniform float light;
-void main(){
- vec2 uv=gl_FragCoord.xy/resolution;uv.y=1.-uv.y;
- vec2 p=vec2((uv.x-.5)*min(resolution.x/resolution.y,1.8)*2.3,(uv.y-.48)*2.7);
- float t=time*.16;
- vec2 q=p;
- q.x+=.42*sin(p.y*2.1+t)+.22*cos(p.x*1.1-t*.7);
- q.y+=.32*sin(p.x*1.8-t*.8);
- float wave=sin(q.x*3.1+q.y*.8+sin(q.y*2.7-t*.55)*1.2);
- float fold=smoothstep(-.5,.65,wave);
- float edge=exp(-11.*abs(wave+.12));
- vec3 base=mix(vec3(.035,.079,.061),vec3(.86,.966,.912),light);
- vec3 shade=mix(vec3(.018,.17,.119),vec3(.30,.70,.52),light);
- vec3 crest=mix(vec3(.10,.36,.247),vec3(.66,.91,.775),light);
- vec3 shine=mix(vec3(.24,.57,.38),vec3(.92,1.,.954),light);
- vec3 field=mix(shade,crest,fold);field=mix(field,shine,edge*.62);
- float cover=smoothstep(.26,.65,uv.y)*(1.-smoothstep(.78,1.,uv.y));
- float wings=.65+.35*smoothstep(.05,.5,abs(uv.x-.5));
- vec3 color=mix(base,field,cover*wings);
- gl_FragColor=vec4(color,1.);
-}`;
-
 type Glyph = { x: number; y: number; born: number; char: string };
 
 /** Flowing field plus a short ASCII pointer trail; no decorative controls. */
@@ -40,38 +15,45 @@ export function InteractiveBackdrop() {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     const pointer = window.matchMedia('(hover: hover) and (pointer: fine)');
     const ctx = trail.getContext('2d');
-    let gl: WebGLRenderingContext | null = null;
-    let program: WebGLProgram | null = null, buffer: WebGLBuffer | null = null;
-    let vertex: WebGLShader | null = null, fragment: WebGLShader | null = null;
-    let resolution: WebGLUniformLocation | null = null, clock: WebGLUniformLocation | null = null, palette: WebGLUniformLocation | null = null;
-    try {
-      gl = canvas.getContext('webgl', { alpha: false, antialias: false, depth: false, powerPreference: 'low-power' });
-      if (gl) {
-        const compile = (type: number, source: string) => {
-          const shader = gl!.createShader(type);if (!shader) throw new Error('Shader unavailable');
-          gl!.shaderSource(shader, source);gl!.compileShader(shader);
-          if (!gl!.getShaderParameter(shader, gl!.COMPILE_STATUS)) { gl!.deleteShader(shader);throw new Error('Shader compile failed'); }
-          return shader;
-        };
-        vertex = compile(gl.VERTEX_SHADER, VERTEX);fragment = compile(gl.FRAGMENT_SHADER, FRAGMENT);
-        program = gl.createProgram();if (!program) throw new Error('Program unavailable');
-        gl.attachShader(program, vertex);gl.attachShader(program, fragment);gl.linkProgram(program);
-        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error('Program link failed');
-        gl.useProgram(program);buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
-        gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
-        const position=gl.getAttribLocation(program,'position');gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,2,gl.FLOAT,false,0,0);
-        resolution=gl.getUniformLocation(program,'resolution');clock=gl.getUniformLocation(program,'time');palette=gl.getUniformLocation(program,'light');
-        root.dataset.renderer='webgl';
+    const field = canvas.getContext('2d');
+    const sample = document.createElement('canvas');
+    const sampleContext = sample.getContext('2d');
+    root.dataset.renderer=field&&sampleContext?'canvas2d':'css';
+    const smooth=(a:number,b:number,x:number)=>{const n=Math.max(0,Math.min(1,(x-a)/(b-a)));return n*n*(3-2*n);};
+    const mix=(a:number,b:number,x:number)=>a+(b-a)*x;
+    let sampleWidth=140,sampleHeight=100;
+    let pixels:ImageData|null=null;
+    const drawField=(seconds:number,light:boolean)=>{
+      if(!field||!sampleContext||!pixels)return;
+      const t=seconds*.22,aspect=Math.min(width/height,1.8),l=light?1:0;
+      const base=[mix(.035,.86,l),mix(.079,.966,l),mix(.061,.912,l)];
+      const shade=[mix(.018,.30,l),mix(.17,.70,l),mix(.119,.52,l)];
+      const crest=[mix(.10,.66,l),mix(.36,.91,l),mix(.247,.775,l)];
+      const shine=[mix(.24,.92,l),mix(.57,1,l),mix(.38,.954,l)];
+      for(let y=0;y<sampleHeight;y++){
+        const v=y/(sampleHeight-1),py=(v-.48)*2.7;
+        const cover=smooth(.26,.65,v)*(1-smooth(.78,1,v));
+        for(let x=0;x<sampleWidth;x++){
+          const u=x/(sampleWidth-1),px=(u-.5)*aspect*2.3;
+          const qx=px+.42*Math.sin(py*2.1+t)+.22*Math.cos(px*1.1-t*.7);
+          const qy=py+.32*Math.sin(px*1.8-t*.8);
+          const wave=Math.sin(qx*3.1+qy*.8+Math.sin(qy*2.7-t*.55)*1.2);
+          const fold=smooth(-.5,.65,wave),edge=Math.exp(-11*Math.abs(wave+.12))*.62;
+          const amount=cover*(.65+.35*smooth(.05,.5,Math.abs(u-.5)));
+          const index=(y*sampleWidth+x)*4;
+          for(let c=0;c<3;c++)pixels.data[index+c]=255*mix(base[c],mix(mix(shade[c],crest[c],fold),shine[c],edge),amount);
+          pixels.data[index+3]=255;
+        }
       }
-    } catch { gl=null; }
-    if (!gl) root.dataset.renderer='css';
+      sampleContext.putImageData(pixels,0,0);field.imageSmoothingEnabled=true;field.imageSmoothingQuality='high';field.drawImage(sample,0,0,canvas.width,canvas.height);
+    };
     let frame=0,lastPaint=-100,lastSpawn=-100,width=1,height=1,visible=true,counter=0;
     let glyphs: Glyph[]=[];
     const start=performance.now();
     const isLight=()=>document.documentElement.dataset.theme==='light';
     const paint=(now=performance.now())=>{
       const light=isLight();
-      if(gl&&program){gl.useProgram(program);gl.uniform2f(resolution,canvas.width,canvas.height);gl.uniform1f(clock,reduced.matches?0:(now-start)/1000);gl.uniform1f(palette,light?1:0);gl.drawArrays(gl.TRIANGLES,0,6);}
+      drawField(reduced.matches?0:(now-start)/1000,light);
       glyphs=glyphs.filter(g=>now-g.born<850);
       if(ctx){
         ctx.clearRect(0,0,width,height);
@@ -91,7 +73,8 @@ export function InteractiveBackdrop() {
     const resize=()=>{
       const rect=root.getBoundingClientRect();width=Math.max(1,rect.width);height=Math.max(1,rect.height);
       const ratio=Math.min(devicePixelRatio||1,1.25,1600/width);
-      canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);gl?.viewport(0,0,canvas.width,canvas.height);
+      canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);
+      sampleWidth=140;sampleHeight=Math.min(180,Math.max(60,Math.round(140*height/width)));sample.width=sampleWidth;sample.height=sampleHeight;pixels=sampleContext?.createImageData(sampleWidth,sampleHeight)??null;
       trail.width=Math.round(width*ratio);trail.height=Math.round(height*ratio);ctx?.setTransform(ratio,0,0,ratio,0,0);restart();
     };
     const move=(event:PointerEvent)=>{
@@ -107,7 +90,7 @@ export function InteractiveBackdrop() {
     const visibility=typeof IntersectionObserver==='undefined'?null:new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;restart();});visibility?.observe(hero);
     const themeObserver=new MutationObserver(restart);themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
     hero.addEventListener('pointermove',move,{passive:true});reduced.addEventListener('change',restart);pointer.addEventListener('change',restart);document.addEventListener('visibilitychange',restart);resize();
-    return()=>{cancelAnimationFrame(frame);sizeObserver?.disconnect();if(!sizeObserver)window.removeEventListener('resize',resize);visibility?.disconnect();themeObserver.disconnect();hero.removeEventListener('pointermove',move);reduced.removeEventListener('change',restart);pointer.removeEventListener('change',restart);document.removeEventListener('visibilitychange',restart);if(gl){if(buffer)gl.deleteBuffer(buffer);if(program)gl.deleteProgram(program);if(vertex)gl.deleteShader(vertex);if(fragment)gl.deleteShader(fragment);}};
+    return()=>{cancelAnimationFrame(frame);sizeObserver?.disconnect();if(!sizeObserver)window.removeEventListener('resize',resize);visibility?.disconnect();themeObserver.disconnect();hero.removeEventListener('pointermove',move);reduced.removeEventListener('change',restart);pointer.removeEventListener('change',restart);document.removeEventListener('visibilitychange',restart);};
   }, []);
   return <div ref={rootRef} className="interactive-backdrop" aria-hidden="true">
     <div className="fluid-fallback" />

@@ -22,7 +22,7 @@ class Events {
   count() { return [...this.listeners.values()].reduce((sum, set) => sum + set.size, 0); }
 }
 
-function fixture({ reduced = false, hidden = false, noObserver = false, top = 1500, playResponses = [] } = {}) {
+function fixture({ reduced = false, hidden = false, noObserver = false, top = 1500, playResponses = [], source = '/assets/video/hero-web.mp4' } = {}) {
   const doc = Object.assign(new Events(), { hidden });
   const media = Object.assign(new Events(), { matches: reduced });
   const observers = [];
@@ -45,13 +45,18 @@ function fixture({ reduced = false, hidden = false, noObserver = false, top = 15
   let playCalls = 0;
   let loadCalls = 0;
   const deferred = [];
+  const playTimes = [];
+  const seeks = [];
+  let currentTime = 0;
   const video = Object.assign(new Events(), {
     ownerDocument: doc, paused: true, ended: false, muted: false, defaultMuted: false,
     autoplay: false, preload: 'none', src: '',
+    readyState: 0, duration: NaN,
     getBoundingClientRect: () => ({ top: videoTop, bottom: videoTop + 500, height: 500, left: 20, right: 980 }),
     load() { loadCalls++; },
     play() {
       playCalls++;
+      playTimes.push(this.currentTime);
       const response = playResponses.shift();
       if (response === 'throw') throw new Error('Not allowed');
       if (response === 'reject') return Promise.reject(new Error('Not allowed'));
@@ -67,28 +72,129 @@ function fixture({ reduced = false, hidden = false, noObserver = false, top = 15
       this.emit('pause');
     },
   });
+  Object.defineProperty(video, 'currentTime', {
+    get: () => currentTime,
+    set(value) { currentTime = value; seeks.push(value); },
+  });
   const context = vm.createContext({ exports: {} });
   vm.runInContext(playbackCode, context);
   const fallbacks = [];
   const control = context.exports.attachProductionVideo(video, {
-    source: '/assets/video/hero-web.mp4', onFallbackChange: value => fallbacks.push(value),
+    source, onFallbackChange: value => fallbacks.push(value),
   });
   return {
-    doc, win, video, media, observers, control, deferred, fallbacks, frames,
+    doc, win, video, media, observers, control, deferred, fallbacks, frames, playTimes, seeks,
     near: value => observers.find(observer => observer.options.rootMargin)?.update(value),
     visible: value => observers.find(observer => !observer.options.rootMargin)?.update(value),
     hidden(value) { doc.hidden = value; doc.emit('visibilitychange'); },
     reduced(value) { media.matches = value; media.emit('change'); },
+    metadata(duration = 108.83) { video.duration = duration; video.readyState = 1; video.emit('loadedmetadata'); },
     scroll(top) { videoTop = top; win.emit('scroll'); for (const [id, callback] of frames) { frames.delete(id); callback(); } },
     playCalls: () => playCalls, loadCalls: () => loadCalls,
     fallback: () => fallbacks.at(-1),
     reattach: () => context.exports.attachProductionVideo(video, {
-      source: '/assets/video/hero-web.mp4', onFallbackChange: value => fallbacks.push(value),
+      source, onFallbackChange: value => fallbacks.push(value),
     }),
   };
 }
 
 const settle = async () => { for (let n = 0; n < 6; n++) await Promise.resolve(); };
+
+test('validated #t=49 seeks after metadata and before the first autoplay, exactly once', async () => {
+  const page = fixture({ source: '/assets/video/mobileNativo-web.mp4#t=49' });
+  page.visible(true);
+  assert.equal(page.playCalls(), 0);
+  assert.equal(page.video.autoplay, false);
+  assert.equal(page.seeks.length, 0);
+  page.metadata(125);
+  await settle();
+  assert.equal(page.video.currentTime, 49);
+  assert.deepEqual(page.playTimes, [49]);
+  assert.deepEqual(page.seeks, [49]);
+  page.metadata(125);
+  page.visible(true);
+  assert.deepEqual(page.seeks, [49], 'Repeated metadata/visibility events must not seek again');
+  page.control.destroy();
+});
+
+test('plain sources start at zero without an unnecessary seek', async () => {
+  const page = fixture();
+  page.visible(true);
+  page.metadata();
+  await settle();
+  assert.deepEqual(page.playTimes, [0]);
+  assert.deepEqual(page.seeks, []);
+  page.control.destroy();
+});
+
+test('fragment playback keeps mid-clip position on resume and restores the start on explicit replay', async () => {
+  const page = fixture({ source: '/assets/video/mobileNativo-web.mp4#t=49' });
+  page.visible(true);
+  page.metadata(125);
+  await settle();
+  page.video.currentTime = 64;
+  page.video.pause();
+  page.control.playManually();
+  await settle();
+  assert.equal(page.playTimes.at(-1), 64);
+  page.video.currentTime = 125;
+  page.video.ended = true;
+  page.video.paused = true;
+  page.video.emit('ended');
+  page.control.playManually();
+  await settle();
+  assert.equal(page.playTimes.at(-1), 49);
+  page.control.destroy();
+});
+
+test('native replay restores the fragment after native controls reset to zero', async () => {
+  const page = fixture({ source: '/assets/video/mobileNativo-web.mp4#t=49' });
+  page.visible(true);
+  page.metadata(125);
+  await settle();
+  page.video.ended = true;
+  page.video.paused = true;
+  page.video.emit('ended');
+  page.video.currentTime = 0;
+  await page.video.play();
+  assert.equal(page.video.currentTime, 49);
+  page.control.destroy();
+});
+
+test('manual reduced-motion playback waits for metadata, then starts at the fragment', async () => {
+  const page = fixture({ source: '/assets/video/mobileNativo-web.mp4#t=49', reduced: true });
+  page.visible(true);
+  page.control.playManually();
+  assert.equal(page.playCalls(), 0);
+  page.metadata(125);
+  await settle();
+  assert.deepEqual(page.playTimes, [49]);
+  page.control.destroy();
+});
+
+test('hidden fragment playback seeks after metadata but waits to autoplay until visible', async () => {
+  const page = fixture({ source: '/assets/video/mobileNativo-web.mp4#t=49' });
+  page.visible(true);
+  page.hidden(true);
+  page.metadata(125);
+  assert.equal(page.playCalls(), 0);
+  page.hidden(false);
+  await settle();
+  assert.deepEqual(page.playTimes, [49]);
+  page.control.destroy();
+});
+
+test('invalid or out-of-range fragments safely fall back to the beginning', async () => {
+  for (const fragment of ['#t=-1', '#t=Infinity', '#t=49oops', '#t=999']) {
+    const page = fixture({ source: `/assets/video/mobileNativo-web.mp4${fragment}` });
+    page.visible(true);
+    page.metadata(125);
+    await settle();
+    assert.equal(page.video.currentTime, 0, fragment);
+    assert.deepEqual(page.playTimes, [0]);
+    page.control.destroy();
+  }
+});
 
 test('render preserves exact poster, native controls, inline playback, and deferred source loading', () => {
   const context = vm.createContext({ exports: {}, require: name => name === './productionVideoPlayback' ? {} : require(name) });
