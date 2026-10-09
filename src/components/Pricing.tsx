@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useBilling, type Billing } from '../context/BillingContext';
 
 const TELEGRAM_URL = 'https://t.me/+T9yAuOWOJiMwMGMx';
@@ -7,6 +7,7 @@ const LIVE_CHECKOUT_ENABLED = !REVIEW_PREVIEW && import.meta.env.VITE_CLOUD_CHEC
 const SANDBOX_PREVIEW = REVIEW_PREVIEW || (!LIVE_CHECKOUT_ENABLED &&
   new URLSearchParams(window.location.search).get('sandbox') === '1');
 const CHECKOUT_ENABLED = import.meta.env.DEV || SANDBOX_PREVIEW || LIVE_CHECKOUT_ENABLED;
+const PAYMENT_LINK_REQUESTED = new URLSearchParams(window.location.search).has('_ptxn');
 
 interface PaddleCheckout {
   Checkout: {
@@ -40,6 +41,16 @@ function loadPaddle(): Promise<PaddleCheckout> {
     }).catch((error: unknown) => { paddleScript = null; throw error; });
   }
   return paddleScript;
+}
+
+async function initializePaddle(token: string, environment: 'sandbox' | 'production'): Promise<PaddleCheckout> {
+  const paddle = await loadPaddle();
+  if (initializedToken !== token) {
+    if (environment === 'sandbox') paddle.Environment.set('sandbox');
+    paddle.Initialize({ token });
+    initializedToken = token;
+  }
+  return paddle;
 }
 
 interface Plan {
@@ -134,6 +145,29 @@ export function Pricing() {
   const [error, setError] = useState<string | null>(null);
   const [sandboxNotice, setSandboxNotice] = useState(false);
 
+  useEffect(() => {
+    if (!PAYMENT_LINK_REQUESTED || !LIVE_CHECKOUT_ENABLED || SANDBOX_PREVIEW) return;
+    let active = true;
+    void fetch('/api/paddle/config', { cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('El enlace de pago no está disponible en este momento.');
+        return response.json() as Promise<{
+          token?: string; environment?: 'sandbox' | 'production'; checkoutReady?: boolean;
+        }>;
+      })
+      .then(async (config) => {
+        if (!config.checkoutReady || config.environment !== 'production' || !config.token?.startsWith('live_')) {
+          throw new Error('El enlace de pago no está disponible en este momento.');
+        }
+        // Paddle.js abre la transacción de _ptxn al inicializarse; no reemplazarla por items.
+        if (active) await initializePaddle(config.token, config.environment);
+      })
+      .catch((cause: unknown) => {
+        if (active) setError(cause instanceof Error ? cause.message : 'No se pudo abrir el enlace de pago.');
+      });
+    return () => { active = false; };
+  }, []);
+
   async function startCheckout(plan: Plan) {
     if (!plan.cloudPlan || checkoutLock.current) return;
     checkoutLock.current = true;
@@ -156,13 +190,11 @@ export function Pricing() {
       if (SANDBOX_PREVIEW && (config.environment !== 'sandbox' || !config.token.startsWith('test_'))) {
         throw new Error('La URL de prueba sólo acepta Paddle Sandbox.');
       }
-      setSandboxNotice(config.environment === 'sandbox');
-      const paddle = await loadPaddle();
-      if (initializedToken !== config.token) {
-        if (config.environment === 'sandbox') paddle.Environment.set('sandbox');
-        paddle.Initialize({ token: config.token });
-        initializedToken = config.token;
+      if (LIVE_CHECKOUT_ENABLED && (config.environment !== 'production' || !config.token.startsWith('live_'))) {
+        throw new Error('El checkout de producción no está disponible en este momento.');
       }
+      setSandboxNotice(config.environment === 'sandbox');
+      const paddle = await initializePaddle(config.token, config.environment);
       paddle.Checkout.open({
         items: [{ priceId, quantity: 1 }],
         customData: { integration: 'playworship_cloud_v1' },

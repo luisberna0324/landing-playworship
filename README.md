@@ -73,8 +73,23 @@ npm install        # instalar dependencias
 npm run dev        # dev server en http://localhost:5173
 npm run build      # compila TS + bundle producción a dist/
 npm run preview    # sirve dist/ en http://localhost:4173
-npm run deploy     # build + firebase deploy --only hosting
+npm run deploy     # main actualizado y publicado + build Live + Firebase Hosting
 ```
+
+### Publicar producción sin retroceder la landing
+
+`npm run deploy` actualiza la referencia `origin/main` y sólo publica si `main`
+coincide exactamente con ella y no hay cambios de código pendientes. Conserva los
+archivos locales ajenos al despliegue. La compilación fuerza
+`VITE_CLOUD_CHECKOUT_ENABLED=true` y `VITE_REVIEW_PREVIEW=false`; no utiliza
+`build:preview` ni `firebase.preview.json`. Para comprobar las condiciones sin
+compilar ni publicar: `node scripts/deploy-live.mjs --check`.
+
+Los enlaces de Paddle con `?_ptxn=...` inicializan el SDK Live automáticamente.
+Paddle abre la transacción indicada; la landing no la reemplaza por otra compra.
+La revisión Sandbox nunca inicializa enlaces Live. Antes de publicar, comprobar
+el build Live con `node qa/check-live-paddle.cjs` (requiere `jsdom`, o su ruta en
+`PLAYWORSHIP_QA_JSDOM`), además de las pruebas de temas/videos y la revisión visual.
 
 ## Videos para la landing
 
