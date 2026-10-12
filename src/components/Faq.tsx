@@ -39,8 +39,30 @@ const ITEMS: FaqItem[] = [
       <p>
         No. El contenido sigue siendo tuyo: LUJUMA SYSTEM SAS no vende ni distribuye los archivos
         guardados en Cloud ni los pone a disposición de otros usuarios. Se procesan únicamente
-        para ofrecer el almacenamiento, respaldo y sincronización que solicitas. Consulta la{' '}
+        para ofrecer el almacenamiento personal, respaldo y sincronización entre tus dispositivos que solicitas. Consulta la{' '}
         <a href="/legal/privacidad.html">Política de privacidad</a> para más información.
+      </p>
+    )
+  },
+  {
+    question: '¿Puedo intercambiar archivos con Teams?',
+    answer: (
+      <p>
+        El intercambio de archivos de Teams está temporalmente deshabilitado.
+        Cloud personal sigue disponible para tus propias canciones. Se conservan los equipos,
+        las membresías y los datos existentes; la pausa no cancela suscripciones ni modifica precios.
+        Si dependías de Teams, contacta con soporte antes de cambiar tu plan.
+      </p>
+    )
+  },
+  {
+    question: '¿PlayWorship busca canciones o portadas en catálogos externos?',
+    answer: (
+      <p>
+        Introduce los datos de la canción manualmente y selecciona tus archivos de audio y una
+        portada local. PlayWorship no consulta MultiTracks/Secuencias ni descarga sus portadas.
+        Usa únicamente material que tengas derecho a almacenar y utilizar; Cloud no concede
+        licencias de música.
       </p>
     )
   },

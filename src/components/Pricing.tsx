@@ -81,7 +81,7 @@ const PLANS: Plan[] = [
     name: 'PlayWorship Cloud 300',
     monthly: '5,99',
     annual: '59,99',
-    desc: 'Lleva tu biblioteca a la nube y mantenla disponible entre dispositivos.',
+    desc: 'Guarda tu biblioteca personal y mantenla disponible entre tus dispositivos.',
     featured: true,
     badge: '300 GB',
     features: [
@@ -96,7 +96,7 @@ const PLANS: Plan[] = [
     name: 'PlayWorship Cloud 500',
     monthly: '8,99',
     annual: '89,99',
-    desc: 'Más espacio para los equipos que necesitan crecer sin dejar su música atrás.',
+    desc: 'Más espacio para tu biblioteca personal, sin dejar tu música atrás.',
     badge: '500 GB',
     features: [
       '500 GB de almacenamiento en la nube',
