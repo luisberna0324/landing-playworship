@@ -89,8 +89,11 @@ const ITEMS: FaqItem[] = [
     question: '¿Puedo controlar la aplicación desde el teléfono?',
     answer: (
       <p>
-        Todavía estamos definiendo la experiencia de control remoto desde el teléfono. Compartiremos
-        los detalles de funcionamiento y compatibilidad cuando estén listos.
+        Sí. Usa PlayWorship en ambos dispositivos, conectados a la misma red local. En
+        Configuración → Control remoto (General en escritorio), elige <strong>Servidor</strong> en el equipo que reproduce
+        el audio y <strong>Cliente</strong> en el teléfono; si aparecen varios servidores, selecciona
+        el tuyo. Puedes controlar reproducción, canciones, mezcla, clic, pads, tono y tempo.
+        El audio sigue saliendo del servidor, sin transmitirse al teléfono.
       </p>
     )
   },
