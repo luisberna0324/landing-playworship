@@ -1,5 +1,8 @@
+import { Fragment, useRef, useState } from 'react';
 import { useDownloads } from '../hooks/useDownloads';
 import { PlatformIcon } from './PlatformIcon';
+import { InstallationGuide, installationGuideId } from './InstallationGuide';
+import type { DesktopPlatform } from './InstallationGuide';
 const TESTFLIGHT_URL = 'https://testflight.apple.com/join/TsUWWH1r';
 const SYSTEMS = [
   { key: 'windows', name: 'Windows', detail: 'Windows 10 / 11 · .exe de 64 bits' },
@@ -11,18 +14,36 @@ function LinkArrow({ external = false }: { external?: boolean }) {
 }
 export function Downloads() {
   const { downloads, usingFallback } = useDownloads();
+  const [guide, setGuide] = useState<DesktopPlatform | null>(null);
+  const guideTrigger = useRef<HTMLButtonElement | null>(null);
+  const closeGuide = () => {
+    setGuide(null);
+    guideTrigger.current?.focus();
+  };
   return <section className="downloads-section" id="descargas" aria-labelledby="downloads-title">
     <div className="container">
       <div className="section-intro"><p className="eyebrow">ELIGE TU PLATAFORMA</p><h2 id="downloads-title">Tu próximo servicio<br /><span>empieza aquí.</span></h2><p>Descarga PlayWorship Local y trabaja con tu música.</p></div>
       <div className="download-grid">
-        {SYSTEMS.map(system => <article className="download-card" key={system.key}>
+        {SYSTEMS.map(system => <Fragment key={system.key}><article className="download-card" data-platform={system.key}>
           <span className="platform-symbol"><PlatformIcon platform={system.key} /></span><h3>{system.name}</h3><p>{system.detail}</p>
           <small>{usingFallback ? system.key === 'android' ? 'APK beta · versión sin verificar' : 'Enlace alternativo · v2.0.2' : `Versión ${downloads.version}`}</small>
           <div className="download-actions">
             <a className="platform-download" href={downloads.platforms[system.key].url}>{system.key === 'macos' ? 'Descargar estable .pkg' : 'Descargar'}<span className="sr-only"> para {system.name}</span><LinkArrow /></a>
+            {system.key !== 'android' && <button
+              type="button"
+              className="installation-guide-toggle"
+              aria-expanded={guide === system.key}
+              aria-controls={installationGuideId(system.key)}
+              onClick={event => {
+                guideTrigger.current = event.currentTarget;
+                setGuide(guide === system.key ? null : system.key);
+              }}
+            >¿Problemas al instalar? <span>Ver guía rápida</span><span className="sr-only"> para {system.name}</span></button>}
             {system.key === 'macos' && <a className="platform-beta" href={TESTFLIGHT_URL} target="_blank" rel="noopener noreferrer">Probar beta · TestFlight<span className="sr-only"> para Mac (abre otra pestaña)</span><LinkArrow external /></a>}
           </div>
-        </article>)}
+        </article>
+          {system.key !== 'android' && <InstallationGuide platform={system.key} open={guide === system.key} onClose={closeGuide} />}
+        </Fragment>)}
         <article className="download-card ios-card"><span className="platform-symbol"><PlatformIcon platform="ios" /></span><h3>iOS <span className="pill">BETA</span></h3><p>iPhone y iPad · TestFlight</p><small>Abre la invitación desde tu dispositivo</small><div className="download-actions"><a className="platform-download" href={TESTFLIGHT_URL} target="_blank" rel="noopener noreferrer">Abrir TestFlight<span className="sr-only"> para iOS (abre otra pestaña)</span><LinkArrow external /></a></div></article>
       </div>
       {usingFallback && <p className="download-note" role="status">No pudimos verificar la versión más reciente. Estos son los enlaces alternativos disponibles.</p>}
