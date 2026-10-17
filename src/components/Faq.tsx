@@ -45,28 +45,6 @@ const ITEMS: FaqItem[] = [
     )
   },
   {
-    question: '¿Puedo intercambiar archivos con Teams?',
-    answer: (
-      <p>
-        El intercambio de archivos de Teams está temporalmente deshabilitado.
-        Cloud personal sigue disponible para tus propias canciones. Se conservan los equipos,
-        las membresías y los datos existentes; la pausa no cancela suscripciones ni modifica precios.
-        Si dependías de Teams, contacta con soporte antes de cambiar tu plan.
-      </p>
-    )
-  },
-  {
-    question: '¿PlayWorship busca canciones o portadas en catálogos externos?',
-    answer: (
-      <p>
-        Introduce los datos de la canción manualmente y selecciona tus archivos de audio y una
-        portada local. PlayWorship no consulta MultiTracks/Secuencias ni descarga sus portadas.
-        Usa únicamente material que tengas derecho a almacenar y utilizar; Cloud no concede
-        licencias de música.
-      </p>
-    )
-  },
-  {
     question: '¿PlayWorship tiene costo?',
     answer: (
       <p>
