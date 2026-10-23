@@ -14,6 +14,6 @@ export function Footer() {
       </div>
       <div className="footer-col"><h3>Legal</h3><a href="/legal/terminos.html">Términos</a><a href="/legal/privacidad.html">Privacidad</a><a href="/legal/reembolsos.html">Reembolsos</a><a href="/legal/copyright.html">Copyright</a></div>
     </div>
-    <div className="footer-bottom"><span>© 2026 PlayWorship</span><span>Windows · macOS · Android · Beta iOS y Mac en TestFlight</span><span>Hecho para la iglesia latinoamericana</span></div>
+    <div className="footer-bottom"><span>© 2026 PlayWorship</span><span>Windows · macOS · Android · iPhone y iPad</span><span>Hecho para la iglesia latinoamericana</span></div>
   </div></footer>;
 }

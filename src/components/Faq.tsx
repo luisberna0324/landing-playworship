@@ -9,7 +9,7 @@ const ITEMS: FaqItem[] = [
     answer: (
       <p>
         Puedes descargarla para <strong>Windows 10 y 11</strong> y <strong>macOS</strong>.
-        También hay una versión para Android y una beta para iOS y Mac mediante TestFlight. Consulta la sección de
+        También hay una versión para Android y otra para iPhone y iPad en App Store. La beta de Mac se ofrece mediante TestFlight. Consulta la sección de
         descargas para ver la disponibilidad de cada plataforma.
       </p>
     )

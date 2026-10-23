@@ -28,7 +28,7 @@ El reproductor carga cerca de la pantalla y solicita reproducción automática s
 - Paddle mantiene BillingProvider, selección mensual/anual, metadatos y overlay originales. La revisión fuerza Sandbox y rechaza configuración live
 - Únicamente la ruta pública original `/api/paddle/config` apunta al servicio existente. No se modifica backend, IAM, Auth, facturación ni producción
 - Los importes y la configuración comercial no cambian. El texto de revisión pide comprobar total e impuestos en Paddle; valores Sandbox no verifican precios live
-- Descargas estables desde el manifiesto oficial. TestFlight exacto proporcionado por el usuario: https://testflight.apple.com/join/TsUWWH1r; Mac estable permanece separado de la beta
+- Descargas de escritorio y Android desde el manifiesto oficial. iPhone y iPad usan la ficha pública de App Store: https://apps.apple.com/us/app/playworship/id6819361132. Mac estable permanece separado de la beta por TestFlight: https://testflight.apple.com/join/TsUWWH1r
 - El HTML de revisión usa no-store y los marcos de QA incluyen una huella del HTML completo del build. Los videos originales conservan caché pública de una hora para admitir reproducción y búsquedas por rango
 
 ## Ejecutar y verificar

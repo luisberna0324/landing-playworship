@@ -12,7 +12,7 @@ export function Hero() {
           <a className="btn-primary" href="#descargas"> Descargar gratis</a>
           <a className="btn-secondary" href="#demo">Explorar la interfaz</a>
         </div>
-        <p className="hero-note">Local y sin conexión <span>·</span> Windows, macOS y Android <span>·</span> iOS en beta</p>
+        <p className="hero-note">Local y sin conexión <span>·</span> Windows, macOS, Android e iOS</p>
       </div>
       <figure className="hero-visual reveal">
         <div className="product-window"><ProductionVideo /></div>

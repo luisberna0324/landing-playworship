@@ -1,4 +1,5 @@
 import { ProductionVideo } from './ProductionVideo';
+import { APP_STORE_URL } from '../appLinks';
 import './VideoShowcases.css';
 
 export function MobileShowcase() {
@@ -9,8 +10,8 @@ export function MobileShowcase() {
         <p className="eyebrow">PLAYWORSHIP EN MÓVIL</p>
         <h2 id="mobile-showcase-title">Tu música.<br /><span>También en tus manos.</span></h2>
         <p>Organiza el setlist en vertical. Cambia a la vista horizontal para recorrer la canción y ajustar la mezcla.</p>
-        <p className="mobile-availability">Android · iPhone y iPad en beta</p>
-        <div className="mobile-showcase-links"><a className="text-link" href="https://testflight.apple.com/join/TsUWWH1r" target="_blank" rel="noopener noreferrer">Abrir TestFlight</a><a className="text-link" href="#descargas">Descargar para Android</a></div>
+        <p className="mobile-availability">Android · iPhone y iPad</p>
+        <div className="mobile-showcase-links"><a className="text-link" href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">Descargar en App Store</a><a className="text-link" href="#descargas">Descargar para Android</a></div>
       </div>
       <figure className="mobile-demo-figure reveal">
         <div className="demo-video-window">

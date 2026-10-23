@@ -46,7 +46,7 @@ export function OrbitShowcase() {
   return <section className="orbit-section" aria-labelledby="orbit-title">
     <Starfield />
     <div className="container">
-      <div className="section-intro reveal"><p className="eyebrow">PLAYWORSHIP CONTIGO</p><h2 id="orbit-title">Tu música.<br /><span>En tu equipo.</span></h2><p>Windows, macOS y Android.<br />Beta para iOS y Mac mediante TestFlight.</p></div>
+      <div className="section-intro reveal"><p className="eyebrow">PLAYWORSHIP CONTIGO</p><h2 id="orbit-title">Tu música.<br /><span>En tu equipo.</span></h2><p>Windows, macOS, Android, iPhone y iPad.<br />Beta para Mac mediante TestFlight.</p></div>
       <div className="orbit-system orbit-devices" aria-hidden="true" data-motion="ambient">
         <div className="orbit-track orbit-track-one"><div className="orbit-spin">
           <span className="orbit-node"><span className="orbit-counter"><DeviceIcon device="phone" platform="apple" /></span></span>

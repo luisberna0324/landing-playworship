@@ -3,6 +3,7 @@ import { useDownloads } from '../hooks/useDownloads';
 import { PlatformIcon } from './PlatformIcon';
 import { InstallationGuide, installationGuideId } from './InstallationGuide';
 import type { DesktopPlatform } from './InstallationGuide';
+import { APP_STORE_URL } from '../appLinks';
 const TESTFLIGHT_URL = 'https://testflight.apple.com/join/TsUWWH1r';
 const SYSTEMS = [
   { key: 'windows', name: 'Windows', detail: 'Windows 10 / 11 · .exe de 64 bits' },
@@ -44,10 +45,10 @@ export function Downloads() {
         </article>
           {system.key !== 'android' && <InstallationGuide platform={system.key} open={guide === system.key} onClose={closeGuide} />}
         </Fragment>)}
-        <article className="download-card ios-card"><span className="platform-symbol"><PlatformIcon platform="ios" /></span><h3>iOS <span className="pill">BETA</span></h3><p>iPhone y iPad · TestFlight</p><small>Abre la invitación desde tu dispositivo</small><div className="download-actions"><a className="platform-download" href={TESTFLIGHT_URL} target="_blank" rel="noopener noreferrer">Abrir TestFlight<span className="sr-only"> para iOS (abre otra pestaña)</span><LinkArrow external /></a></div></article>
+        <article className="download-card ios-card"><span className="platform-symbol"><PlatformIcon platform="ios" /></span><h3>iOS</h3><p>iPhone y iPad · App Store</p><small>Descarga oficial para iPhone y iPad</small><div className="download-actions"><a className="platform-download" href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">Descargar en App Store<span className="sr-only"> para iPhone y iPad (abre otra pestaña)</span><LinkArrow external /></a></div></article>
       </div>
       {usingFallback && <p className="download-note" role="status">No pudimos verificar la versión más reciente. Estos son los enlaces alternativos disponibles.</p>}
-      <p className="download-note">Beta para iOS y Mac: TestFlight muestra las versiones compatibles y la disponibilidad al abrir la invitación.</p>
+      <p className="download-note">La beta para Mac se ofrece por TestFlight; la versión de iPhone y iPad está en App Store.</p>
       <p className="download-note">¿Necesitas una mano? <a href="https://help.playworship.app">Visita el centro de ayuda</a></p>
     </div>
   </section>;
