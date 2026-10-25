@@ -48,13 +48,13 @@
     document.head.appendChild(style);
     var panel = document.createElement('section');
     panel.id = 'pw-consent';
-    panel.setAttribute('aria-label', 'Preferencias de privacidad');
+    panel.setAttribute('aria-label', 'Preferencias de cookies');
     var heading = document.createElement('p');
     var title = document.createElement('strong');
-    title.textContent = 'Tú decides sobre la analítica';
+    title.textContent = 'Usamos cookies';
     heading.appendChild(title);
     var text = document.createElement('p');
-    text.textContent = 'Con tu permiso usamos Google Analytics para conocer las visitas y mejorar PlayWorship. Puedes rechazarlo y seguir usando la página. ';
+    text.textContent = 'Utilizamos cookies para analizar las visitas y mejorar tu experiencia en PlayWorship. Puedes aceptar o rechazar las cookies opcionales. Más información en nuestra ';
     var link = document.createElement('a');
     link.href = '/legal/privacidad.html';
     link.textContent = 'Política de privacidad';
@@ -63,10 +63,10 @@
     actions.id = 'pw-consent-actions';
     var deny = document.createElement('button');
     deny.type = 'button';
-    deny.textContent = 'Solo necesarias';
+    deny.textContent = 'Rechazar opcionales';
     var allow = document.createElement('button');
     allow.type = 'button';
-    allow.textContent = 'Aceptar analítica';
+    allow.textContent = 'Aceptar cookies';
     if (blocked) {
       allow.disabled = true;
       var notice = document.createElement('p');
@@ -76,7 +76,7 @@
     var settings = document.createElement('button');
     settings.id = 'pw-privacy-settings';
     settings.type = 'button';
-    settings.textContent = 'Privacidad';
+    settings.textContent = 'Configurar cookies';
     settings.setAttribute('aria-controls', panel.id);
     function close(value) { update(value); panel.hidden = true; settings.hidden = false; settings.setAttribute('aria-expanded', 'false'); settings.focus(); }
     deny.addEventListener('click', function () { close('denied'); });

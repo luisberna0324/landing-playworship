@@ -7,7 +7,7 @@ por sí solas. No se contrata Analytics 360 ni se añaden exportaciones a BigQue
 `public/analytics.js` se incluye en la landing, precios y páginas legales.
 Solo funciona en los dominios públicos de producción. No carga Google antes
 del consentimiento. Ambas elecciones tienen igual prominencia y la página
-sigue disponible al rechazar. El botón Privacidad permite cambiar la elección.
+sigue disponible al rechazar. El botón Configurar cookies permite cambiar la elección.
 La preferencia se guarda como `playworship.analytics-consent.v1` en localStorage.
 GPC y Do Not Track deshabilitan la medición, incluso con permiso guardado.
 
