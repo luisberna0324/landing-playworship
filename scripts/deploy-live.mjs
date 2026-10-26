@@ -21,7 +21,7 @@ try {
   if (process.argv.includes('--check')) process.exit(0);
   const env = { ...process.env, VITE_CLOUD_CHECKOUT_ENABLED: 'true', VITE_REVIEW_PREVIEW: 'false' };
   run('npm', ['run', 'build'], { env, stdio: 'inherit' });
-  run('firebase', ['deploy', '--project', 'play-worship', '--only', 'hosting', '--message', `Landing main ${commit}`], { env, stdio: 'inherit' });
+  run('firebase', ['deploy', '--project', 'play-worship', '--only', 'hosting:landing', '--message', `Landing main ${commit}`], { env, stdio: 'inherit' });
 } catch (error) {
   console.error(error.message);
   process.exitCode = 1;

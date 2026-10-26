@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "play-worship"
+  },
+  "targets": {
+    "play-worship": {
+      "hosting": {
+        "landing": [
+          "play-worship"
+        ]
+      }
+    }
   }
 }

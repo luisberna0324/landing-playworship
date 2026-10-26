@@ -82,7 +82,8 @@ npm run deploy     # main actualizado y publicado + build Live + Firebase Hostin
 coincide exactamente con ella y no hay cambios de código pendientes. Conserva los
 archivos locales ajenos al despliegue. La compilación fuerza
 `VITE_CLOUD_CHECKOUT_ENABLED=true` y `VITE_REVIEW_PREVIEW=false`; no utiliza
-`build:preview` ni `firebase.preview.json`. Para comprobar las condiciones sin
+`build:preview` ni `firebase.preview.json`. El destino `landing` está fijado al sitio
+`play-worship` y se publica con `--only hosting:landing`. Para comprobar las condiciones sin
 compilar ni publicar: `node scripts/deploy-live.mjs --check`.
 
 Los enlaces de Paddle con `?_ptxn=...` inicializan el SDK Live automáticamente.
