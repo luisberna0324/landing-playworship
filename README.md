@@ -92,6 +92,31 @@ La revisión Sandbox nunca inicializa enlaces Live. Antes de publicar, comprobar
 el build Live con `node qa/check-live-paddle.cjs` (requiere `jsdom`, o su ruta en
 `PLAYWORSHIP_QA_JSDOM`), además de las pruebas de temas/videos y la revisión visual.
 
+## Novedades de la aplicacion
+
+Cada tarjeta de descarga incluye `ReleaseNotesLink` justo despues de su boton
+principal: "Notas de version", que lleva a `https://help.playworship.app/#novedades`.
+No hay un bloque independiente. No muestra numeros, fechas ni resumenes,
+ni consulta el feed desde la landing. La ayuda conserva el historial y carga el
+detalle por version bajo demanda. Descargas, pagos y tiendas no cambian.
+
+La fuente editorial sigue siendo `release-notes/<version>.json` del repositorio
+de la app. El generador y sincronizador de resumenes quedan preparados para uso
+futuro; `src/generated/release-summary.json` no se muestra ni se incluye en el
+boton. No editar ese archivo generado a mano.
+
+```sh
+npm run sync:releases -- /ruta/checkout/app/output/release-document/latest.json
+npm run test:releases
+npm run build
+```
+
+Despues de publicar el feed de la app, `npm run sync:releases` sin argumento
+actualiza el respaldo desde GCS. `src/releases/releaseSummary.ts` valida la
+entrada antes de reemplazarlo. El comando de sincronizacion no despliega sitios
+ni ejecuta suites. Activar el feed y publicar los sitios son pasos separados;
+ejecutar estas pruebas no hace ninguna de esas publicaciones.
+
 ## Videos para la landing
 
 Para las demostraciones de la app usamos MP4 en lugar de GIF: mantiene el texto

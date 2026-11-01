@@ -1,6 +1,7 @@
 import { Fragment, useRef, useState } from 'react';
 import { useDownloads } from '../hooks/useDownloads';
 import { PlatformIcon } from './PlatformIcon';
+import { ReleaseNotesLink } from './ReleaseNotesLink';
 import { InstallationGuide, installationGuideId } from './InstallationGuide';
 import type { DesktopPlatform } from './InstallationGuide';
 import { APP_STORE_URL } from '../appLinks';
@@ -30,6 +31,7 @@ export function Downloads() {
           <small>{usingFallback ? system.key === 'android' ? 'APK beta · versión sin verificar' : 'Enlace alternativo · v2.0.2' : `Versión ${downloads.version}`}</small>
           <div className="download-actions">
             <a className="platform-download" href={downloads.platforms[system.key].url}>{system.key === 'macos' ? 'Descargar estable .pkg' : 'Descargar'}<span className="sr-only"> para {system.name}</span><LinkArrow /></a>
+            <ReleaseNotesLink platform={system.name} />
             {system.key !== 'android' && <button
               type="button"
               className="installation-guide-toggle"
@@ -45,7 +47,7 @@ export function Downloads() {
         </article>
           {system.key !== 'android' && <InstallationGuide platform={system.key} open={guide === system.key} onClose={closeGuide} />}
         </Fragment>)}
-        <article className="download-card ios-card"><span className="platform-symbol"><PlatformIcon platform="ios" /></span><h3>iOS</h3><p>iPhone y iPad · App Store</p><small>Descarga oficial para iPhone y iPad</small><div className="download-actions"><a className="platform-download" href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">Descargar en App Store<span className="sr-only"> para iPhone y iPad (abre otra pestaña)</span><LinkArrow external /></a></div></article>
+        <article className="download-card ios-card"><span className="platform-symbol"><PlatformIcon platform="ios" /></span><h3>iOS</h3><p>iPhone y iPad · App Store</p><small>Descarga oficial para iPhone y iPad</small><div className="download-actions"><a className="platform-download" href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">Descargar en App Store<span className="sr-only"> para iPhone y iPad (abre otra pestaña)</span><LinkArrow external /></a><ReleaseNotesLink platform="iPhone y iPad" /></div></article>
       </div>
       {usingFallback && <p className="download-note" role="status">No pudimos verificar la versión más reciente. Estos son los enlaces alternativos disponibles.</p>}
       <p className="download-note">La beta para Mac se ofrece por TestFlight; la versión de iPhone y iPad está en App Store.</p>

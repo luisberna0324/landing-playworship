@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 2,
+  "release": {
+    "version": "2.4.0",
+    "publishedAt": "2026-10-31T20:38:17Z",
+    "platforms": [
+      "windows",
+      "macos",
+      "android",
+      "ios"
+    ],
+    "title": "Una misma versión en todos tus dispositivos",
+    "summary": "Una misma versión en todos tus dispositivos, con las mejoras recientes para preparar y acompañar cada servicio.",
+    "highlights": [
+      "Metrónomo y tempo con BPM decimales.",
+      "Volúmenes de instrumentos vinculados.",
+      "Letras con secciones en Android y FreeShow en escritorio."
+    ],
+    "detailsFile": "versions/2.4.0.json",
+    "statusFile": "status/2.4.0.json"
+  }
+}

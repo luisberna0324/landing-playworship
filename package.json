@@ -8,6 +8,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "test:releases": "node scripts/prepare-release-tests.mjs && node --test tests/releases.test.mjs",
+    "sync:releases": "node scripts/prepare-release-tests.mjs && node scripts/sync-release-summary.mjs",
     "deploy": "node scripts/deploy-live.mjs",
     "build:preview": "node scripts/build-preview.mjs"
   },
