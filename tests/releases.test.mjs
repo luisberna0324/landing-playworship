@@ -23,7 +23,7 @@ test('release-notes link points to the full help history without duplicating its
   assert.match(html, /para Windows/);
 });
 
-test('all four platform cards include notes directly after their unchanged download action', async () => {
+test('all four platform cards include notes directly after their primary download action', async () => {
   const html = renderToStaticMarkup(React.createElement(Downloads));
   const cards = html.match(/<article class="download-card[^>]*>[\s\S]*?<\/article>/g);
   assert.equal(cards.length, 4);
@@ -35,7 +35,11 @@ test('all four platform cards include notes directly after their unchanged downl
     assert.match(card, /href="https:\/\/help\.playworship\.app\/#novedades"/);
   }
   assert.match(cards[0], /class="platform-download" href="[^"]+\.exe"/);
-  assert.match(cards[1], /class="platform-download" href="[^"]+\.pkg"/);
+  assert.match(cards[1], /class="platform-download" href="https:\/\/apps\.apple\.com\/us\/app\/playworship\/id6819361132"/);
+  assert.match(cards[1], /class="platform-beta" href="[^"]+\.pkg"/);
+  assert.match(cards[1], /Descargar en Mac App Store/);
+  assert.match(cards[1], /App Store · macOS 12\.0 o posterior/);
+  assert.match(cards[1], /direct-download-version">Enlace alternativo · v2\.0\.2/);
   assert.match(cards[1], /class="platform-beta" href="https:\/\/testflight\.apple\.com\/join\/TsUWWH1r"/);
   assert.match(cards[2], /class="platform-download" href="\/downloads\/playworship-android-beta\.apk"/);
   assert.match(cards[3], /class="platform-download" href="https:\/\/apps\.apple\.com\/us\/app\/playworship\/id6819361132"/);

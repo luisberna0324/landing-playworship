@@ -8,7 +8,7 @@ import { APP_STORE_URL } from '../appLinks';
 const TESTFLIGHT_URL = 'https://testflight.apple.com/join/TsUWWH1r';
 const SYSTEMS = [
   { key: 'windows', name: 'Windows', detail: 'Windows 10 / 11 · .exe de 64 bits' },
-  { key: 'macos', name: 'macOS', detail: 'Mac · Instalador estable .pkg' },
+  { key: 'macos', name: 'macOS', detail: 'Mac App Store e instalador .pkg' },
   { key: 'android', name: 'Android', detail: 'Teléfono y tableta · .apk' },
 ] as const;
 function LinkArrow({ external = false }: { external?: boolean }) {
@@ -28,10 +28,11 @@ export function Downloads() {
       <div className="download-grid">
         {SYSTEMS.map(system => <Fragment key={system.key}><article className="download-card" data-platform={system.key}>
           <span className="platform-symbol"><PlatformIcon platform={system.key} /></span><h3>{system.name}</h3><p>{system.detail}</p>
-          <small>{usingFallback ? system.key === 'android' ? 'APK beta · versión sin verificar' : 'Enlace alternativo · v2.0.2' : `Versión ${downloads.version}`}</small>
+          <small>{system.key === 'macos' ? 'App Store · macOS 12.0 o posterior' : usingFallback ? system.key === 'android' ? 'APK beta · versión sin verificar' : 'Enlace alternativo · v2.0.2' : `Versión ${downloads.version}`}</small>
           <div className="download-actions">
-            <a className="platform-download" href={downloads.platforms[system.key].url}>{system.key === 'macos' ? 'Descargar estable .pkg' : 'Descargar'}<span className="sr-only"> para {system.name}</span><LinkArrow /></a>
+            {system.key === 'macos' ? <a className="platform-download" href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">Descargar en Mac App Store<span className="sr-only"> (abre otra pestaña)</span><LinkArrow external /></a> : <a className="platform-download" href={downloads.platforms[system.key].url}>Descargar<span className="sr-only"> para {system.name}</span><LinkArrow /></a>}
             <ReleaseNotesLink platform={system.name} />
+            {system.key === 'macos' && <a className="platform-beta" href={downloads.platforms.macos.url}><span>Descargar instalador .pkg<br /><span className="direct-download-version">{usingFallback ? 'Enlace alternativo · v2.0.2' : `Descarga directa · v${downloads.version}`}</span></span><LinkArrow /></a>}
             {system.key !== 'android' && <button
               type="button"
               className="installation-guide-toggle"
@@ -41,7 +42,7 @@ export function Downloads() {
                 guideTrigger.current = event.currentTarget;
                 setGuide(guide === system.key ? null : system.key);
               }}
-            >¿Problemas al instalar? <span>Ver guía rápida</span><span className="sr-only"> para {system.name}</span></button>}
+            >{system.key === 'macos' ? '¿Problemas con el .pkg?' : '¿Problemas al instalar?'} <span>Ver guía rápida</span><span className="sr-only"> para {system.name}</span></button>}
             {system.key === 'macos' && <a className="platform-beta" href={TESTFLIGHT_URL} target="_blank" rel="noopener noreferrer">Probar beta · TestFlight<span className="sr-only"> para Mac (abre otra pestaña)</span><LinkArrow external /></a>}
           </div>
         </article>
@@ -50,7 +51,7 @@ export function Downloads() {
         <article className="download-card ios-card"><span className="platform-symbol"><PlatformIcon platform="ios" /></span><h3>iOS</h3><p>iPhone y iPad · App Store</p><small>Descarga oficial para iPhone y iPad</small><div className="download-actions"><a className="platform-download" href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">Descargar en App Store<span className="sr-only"> para iPhone y iPad (abre otra pestaña)</span><LinkArrow external /></a><ReleaseNotesLink platform="iPhone y iPad" /></div></article>
       </div>
       {usingFallback && <p className="download-note" role="status">No pudimos verificar la versión más reciente. Estos son los enlaces alternativos disponibles.</p>}
-      <p className="download-note">La beta para Mac se ofrece por TestFlight; la versión de iPhone y iPad está en App Store.</p>
+      <p className="download-note">PlayWorship está disponible en App Store para Mac, iPhone y iPad. La beta para Mac continúa en TestFlight.</p>
       <p className="download-note">¿Necesitas una mano? <a href="https://help.playworship.app">Visita el centro de ayuda</a></p>
     </div>
   </section>;
