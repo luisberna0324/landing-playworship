@@ -6,6 +6,7 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {parseReleaseSummary, helpReleaseURL, newerOrEqual, fetchReleaseSummary, RELEASE_SUMMARY_URL} from '../.test-build/releases/releaseSummary.mjs';
 import {ReleaseNotesLink} from '../.test-build/components/ReleaseNotesLink.mjs';
 import {Downloads} from '../.test-build/components/Downloads.mjs';
+import {MICROSOFT_STORE_ID, MICROSOFT_STORE_URL, MICROSOFT_STORE_DEEP_LINK} from '../.test-build/appLinks.mjs';
 const snapshot = JSON.parse(await readFile('src/generated/release-summary.json', 'utf8'));
 
 test('release-notes link points to the full help history without duplicating its content', () => {
@@ -34,7 +35,10 @@ test('all four platform cards include notes directly after their primary downloa
     assert.ok(card.includes('para ' + platform));
     assert.match(card, /href="https:\/\/help\.playworship\.app\/#novedades"/);
   }
-  assert.match(cards[0], /class="platform-download" href="[^"]+\.exe"/);
+  assert.ok(cards[0].includes(`class="platform-download" href="${MICROSOFT_STORE_URL}"`));
+  assert.match(cards[0], /Descargar en Microsoft Store/);
+  assert.match(cards[0], /class="platform-beta" href="[^"]+\.exe"/);
+  assert.match(cards[0], /direct-download-version">Enlace alternativo · v2\.0\.2/);
   assert.match(cards[1], /class="platform-download" href="https:\/\/apps\.apple\.com\/us\/app\/playworship\/id6819361132"/);
   assert.match(cards[1], /class="platform-beta" href="[^"]+\.pkg"/);
   assert.match(cards[1], /Descargar en Mac App Store/);
@@ -46,6 +50,27 @@ test('all four platform cards include notes directly after their primary downloa
   assert.equal((html.match(/class="installation-guide-toggle"/g) || []).length, 2);
   const app = await readFile('src/App.tsx', 'utf8');
   assert.doesNotMatch(app, /ReleaseHighlights/);
+});
+
+test('the native Microsoft Store link is an explicit Windows-only option', t => {
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
+  t.after(() => {
+    if (original) Object.defineProperty(globalThis, 'navigator', original);
+    else delete globalThis.navigator;
+  });
+  const renderFor = userAgent => {
+    Object.defineProperty(globalThis, 'navigator', {configurable: true, value: {userAgent}});
+    return renderToStaticMarkup(React.createElement(Downloads));
+  };
+  assert.equal(MICROSOFT_STORE_ID, '9MVD14L6PFCR');
+  assert.equal(MICROSOFT_STORE_URL, 'https://apps.microsoft.com/detail/9MVD14L6PFCR');
+  assert.equal(MICROSOFT_STORE_DEEP_LINK, 'ms-windows-store://pdp/?productid=9MVD14L6PFCR');
+  const windows = renderFor('Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+  assert.ok(windows.includes(`href="${MICROSOFT_STORE_DEEP_LINK}"`));
+  assert.match(windows, /Abrir en la app de Microsoft Store/);
+  const mac = renderFor('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)');
+  assert.doesNotMatch(mac, /ms-windows-store:/);
+  assert.ok(mac.includes(`href="${MICROSOFT_STORE_URL}"`));
 });
 
 test('summary rejects malformed dates, excessive highlights, paths and embedded full documents', () => {

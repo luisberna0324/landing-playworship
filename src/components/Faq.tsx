@@ -9,7 +9,7 @@ const ITEMS: FaqItem[] = [
     answer: (
       <p>
         Puedes descargarla para <strong>Windows 10 y 11</strong> y <strong>macOS</strong>.
-        También hay una versión para Android. Mac, iPhone y iPad están disponibles en App Store. En Mac puedes elegir la tienda, el instalador directo .pkg o la beta de TestFlight. Consulta la sección de
+        También hay una versión para Android. Windows está disponible en Microsoft Store y Mac, iPhone y iPad en App Store. En Mac puedes elegir la tienda, el instalador directo .pkg o la beta de TestFlight. Consulta la sección de
         descargas para ver la disponibilidad de cada plataforma.
       </p>
     )
@@ -58,8 +58,9 @@ const ITEMS: FaqItem[] = [
     question: '¿Cómo instalo Play Worship?',
     answer: (
       <p>
-        Visita la sección de descargas y elige tu plataforma. En Windows, descarga el instalador{' '}
-        <code>.exe</code> y sigue las instrucciones. En Mac puedes instalarla desde Mac App Store o descargar el archivo <code>.pkg</code>. En iPhone y iPad, usa App Store.
+        Visita la sección de descargas y elige tu plataforma. En Windows, usa Microsoft Store o
+        descarga el instalador <code>.exe</code>. En Mac puedes instalarla desde Mac App Store o
+        descargar el archivo <code>.pkg</code>. En iPhone y iPad, usa App Store.
       </p>
     )
   },

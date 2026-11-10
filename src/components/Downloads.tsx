@@ -4,18 +4,26 @@ import { PlatformIcon } from './PlatformIcon';
 import { ReleaseNotesLink } from './ReleaseNotesLink';
 import { InstallationGuide, installationGuideId } from './InstallationGuide';
 import type { DesktopPlatform } from './InstallationGuide';
-import { APP_STORE_URL } from '../appLinks';
+import { APP_STORE_URL, MICROSOFT_STORE_DEEP_LINK, MICROSOFT_STORE_URL } from '../appLinks';
 const TESTFLIGHT_URL = 'https://testflight.apple.com/join/TsUWWH1r';
 const SYSTEMS = [
-  { key: 'windows', name: 'Windows', detail: 'Windows 10 / 11 · .exe de 64 bits' },
-  { key: 'macos', name: 'macOS', detail: 'Mac App Store e instalador .pkg' },
-  { key: 'android', name: 'Android', detail: 'Teléfono y tableta · .apk' },
+  {
+    key: 'windows', name: 'Windows', detail: 'Microsoft Store e instalador .exe',
+    store: { url: MICROSOFT_STORE_URL, name: 'Microsoft Store', detail: 'Windows 10 / 11', format: '.exe' },
+  },
+  {
+    key: 'macos', name: 'macOS', detail: 'Mac App Store e instalador .pkg',
+    store: { url: APP_STORE_URL, name: 'Mac App Store', detail: 'App Store · macOS 12.0 o posterior', format: '.pkg' },
+  },
+  { key: 'android', name: 'Android', detail: 'Teléfono y tableta · .apk', store: null },
 ] as const;
 function LinkArrow({ external = false }: { external?: boolean }) {
   return <svg className="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d={external ? 'M6 18 18 6M6 6h12v12' : 'M12 4v15m-6-6 6 6 6-6'} /></svg>;
 }
 export function Downloads() {
   const { downloads, usingFallback } = useDownloads();
+  const isWindows = typeof navigator !== 'undefined' && /\bWindows NT\b/i.test(navigator.userAgent);
+  const directVersion = usingFallback ? 'Enlace alternativo · v2.0.2' : `Descarga directa · v${downloads.version}`;
   const [guide, setGuide] = useState<DesktopPlatform | null>(null);
   const guideTrigger = useRef<HTMLButtonElement | null>(null);
   const closeGuide = () => {
@@ -28,11 +36,12 @@ export function Downloads() {
       <div className="download-grid">
         {SYSTEMS.map(system => <Fragment key={system.key}><article className="download-card" data-platform={system.key}>
           <span className="platform-symbol"><PlatformIcon platform={system.key} /></span><h3>{system.name}</h3><p>{system.detail}</p>
-          <small>{system.key === 'macos' ? 'App Store · macOS 12.0 o posterior' : usingFallback ? system.key === 'android' ? 'APK beta · versión sin verificar' : 'Enlace alternativo · v2.0.2' : `Versión ${downloads.version}`}</small>
+          <small>{system.store?.detail ?? (usingFallback ? 'APK beta · versión sin verificar' : `Versión ${downloads.version}`)}</small>
           <div className="download-actions">
-            {system.key === 'macos' ? <a className="platform-download" href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">Descargar en Mac App Store<span className="sr-only"> (abre otra pestaña)</span><LinkArrow external /></a> : <a className="platform-download" href={downloads.platforms[system.key].url}>Descargar<span className="sr-only"> para {system.name}</span><LinkArrow /></a>}
+            {system.store ? <a className="platform-download" href={system.store.url} target="_blank" rel="noopener noreferrer">Descargar en {system.store.name}<span className="sr-only"> (abre otra pestaña)</span><LinkArrow external /></a> : <a className="platform-download" href={downloads.platforms[system.key].url}>Descargar<span className="sr-only"> para {system.name}</span><LinkArrow /></a>}
             <ReleaseNotesLink platform={system.name} />
-            {system.key === 'macos' && <a className="platform-beta" href={downloads.platforms.macos.url}><span>Descargar instalador .pkg<br /><span className="direct-download-version">{usingFallback ? 'Enlace alternativo · v2.0.2' : `Descarga directa · v${downloads.version}`}</span></span><LinkArrow /></a>}
+            {system.key === 'windows' && isWindows && <a className="platform-beta" href={MICROSOFT_STORE_DEEP_LINK}>Abrir en la app de Microsoft Store<LinkArrow external /></a>}
+            {system.store && <a className="platform-beta" href={downloads.platforms[system.key].url}><span>Descargar instalador {system.store.format}<br /><span className="direct-download-version">{directVersion}</span></span><LinkArrow /></a>}
             {system.key !== 'android' && <button
               type="button"
               className="installation-guide-toggle"
@@ -42,7 +51,7 @@ export function Downloads() {
                 guideTrigger.current = event.currentTarget;
                 setGuide(guide === system.key ? null : system.key);
               }}
-            >{system.key === 'macos' ? '¿Problemas con el .pkg?' : '¿Problemas al instalar?'} <span>Ver guía rápida</span><span className="sr-only"> para {system.name}</span></button>}
+            >¿Problemas con el {system.store?.format}? <span>Ver guía rápida</span><span className="sr-only"> para {system.name}</span></button>}
             {system.key === 'macos' && <a className="platform-beta" href={TESTFLIGHT_URL} target="_blank" rel="noopener noreferrer">Probar beta · TestFlight<span className="sr-only"> para Mac (abre otra pestaña)</span><LinkArrow external /></a>}
           </div>
         </article>
